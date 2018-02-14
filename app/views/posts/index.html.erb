@@ -1,0 +1,13 @@
+<h1>All posts are here</h1>
+
+<%= link_to "+ Post", new_post_path %>
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <h3><%= link_to post.title, post.url %></h3>
+      <%= link_to "Detail", post %>
+      <p><%= post.user.email %></p>
+      <p><%= post.description %></p>
+    </li>
+  <% end %>
+</ul>

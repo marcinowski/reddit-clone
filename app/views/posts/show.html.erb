@@ -1,0 +1,7 @@
+<h1><%= link_to @post.title, @post.url %></h1>
+<p><%= @post.user.email %></p>
+<p><%= @post.description %></p>
+<% if is_owner? %>
+  <%= link_to "Edit", edit_post_path %>
+  <%= link_to "Delete", post_path, method: :delete%>
+<% end %>
