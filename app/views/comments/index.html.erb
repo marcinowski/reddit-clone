@@ -1,0 +1,29 @@
+<%= render "shared/post_detail" %>
+
+<h1>All comments are here</h1>
+
+<% if logged_in? %>
+  <h3>Add a comment</h3>
+  <%= form_with(model: [ @post, @post.comments.build ], local: true) do |c| %>
+    <p>
+      <%= c.label :content %><br>
+      <%= c.text_area :content %>
+    </p>
+    <p>
+      <%= c.submit %>
+    </p>
+  <% end %>
+<% end %>
+
+<ul>
+<% @post.comments.all.each do |c| %>
+  <li>
+    <p><%= c.user.email %> <%= c.created_at %></p>
+    <p><%= c.content %></p>
+    <% if c.user == current_user %>
+      <%= link_to "Edit", edit_post_comment_path(@post, c) %>
+      <%= link_to "Delete", post_comment_path(@post, c), method: :delete %>
+    <% end %>
+  </li>
+<% end %>
+</ul>

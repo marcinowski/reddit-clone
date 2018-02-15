@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    redirect_to post_comments_path(params[:id])
   end
 
   def edit

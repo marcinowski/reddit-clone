@@ -5,7 +5,7 @@
   <% @posts.each do |post| %>
     <li>
       <h3><%= link_to post.title, post.url %></h3>
-      <%= link_to "Detail", post %>
+      <%= link_to "Comments", post_comments_path(post) %>
       <p><%= post.user.email %></p>
       <p><%= post.description %></p>
     </li>
