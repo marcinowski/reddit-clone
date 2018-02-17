@@ -1,5 +1,6 @@
 <h1>Welcome to /subs/<%= @sub.slug %></h1>
 
+<%= link_to "+ Post", new_sub_post_path(sub_slug: @sub.slug) %>
 <ul>
   <% @posts.each do |post| %>
     <li>

@@ -7,5 +7,7 @@
   <%= p.text_field :title %>
   <%= p.label :description %>
   <%= p.text_area :description %>
+  <%= p.label :sub_id %>
+  <%= p.select :sub_id, @subs %>
   <%= p.submit "Add a post" %>
 <% end %>

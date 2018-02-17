@@ -6,17 +6,23 @@ class PostsController < ApplicationController
       redirect_to root_url
       return
     else
-      @post = Post.new
+      sub = Sub.find_by(slug: params[:sub_slug])
+      @subs = Sub.pluck(:slug, :id)
+      if sub.nil?
+        @post = Post.new
+      else
+        @post = Post.new(sub_id: sub.id)
+      end
     end
   end
 
   def create
     post = Post.new(user: current_user, title: post_params[:title],
-      url: post_params[:url], description: post_params[:description])
+      url: post_params[:url], description: post_params[:description], sub_id: post_params[:sub_id])
     if post.save
-      redirect_to posts_path
+      redirect_to post_path(post)
     else
-      render 'new'
+      redirect_to new_post_path
     end
   end
 
@@ -70,6 +76,6 @@ class PostsController < ApplicationController
 
   private
     def post_params
-      params.require(:post).permit(:title, :url, :description)
+      params.require(:post).permit(:title, :url, :description, :sub_id)
     end
 end
