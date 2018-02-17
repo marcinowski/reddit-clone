@@ -8,10 +8,9 @@
   </head>
 
   <body>
-    <% if !flash.empty? %>
-      <%= flash.each do |message_type, message| %>
-        <div class="alert alert-<%= message_type %>"><%= message %></div>
-      <% end %>
+    <p><% all_subs.each do |s| %><%= link_to s.to_s, sub_path(slug: s) %>, <% end %></p>
+    <% flash.each do |message_type, message| %>
+      <div class="alert alert-<%= message_type %>"><%= message %></div>
     <% end %>
     <% if logged_in? %>
       <p>Welcome <%= @current_user.email %></p>

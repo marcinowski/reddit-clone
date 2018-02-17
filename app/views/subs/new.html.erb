@@ -1,0 +1,7 @@
+<h1>Create a sub</h1>
+
+<%= form_for(@sub) do |s| %>
+  <%= s.label :slug %>
+  <%= s.text_field :slug %>
+  <%= s.submit "Add" %>
+<% end %>
