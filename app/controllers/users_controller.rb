@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout "auth", :only => [:new]
   def show
     @user = User.find(params[:id])
   end
@@ -20,7 +21,7 @@ class UsersController < ApplicationController
       log_in @user
       redirect_to @user
     else
-      render 'new'
+      render "new"
     end
   end
 
