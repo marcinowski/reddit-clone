@@ -11,5 +11,5 @@ Rails.application.routes.draw do
     resources :comments, only: [:index, :new, :create, :edit, :update, :destroy]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: "posts#index"
+  root 'subs#show', {slug: 'all'}
 end
