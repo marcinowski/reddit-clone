@@ -4,11 +4,11 @@ class SubsController < ApplicationController
   end
 
   def create
-    sub = Sub.new(slug: sub_params)
-    if sub.save
+    @sub = Sub.new(slug: sub_params)
+    if @sub.save
       redirect_to sub_path(slug: sub.slug)
     else
-      redirect_to root_url
+      render "new"
     end
   end
 

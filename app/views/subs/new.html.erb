@@ -1,6 +1,16 @@
 <h1>Create a sub</h1>
 
 <%= form_for(@sub) do |s| %>
+  <% if @sub.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sub.errors.count, "error") %> prohibited this sub from being saved:</h2>
+      <ul>
+      <% @sub.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <%= s.label :slug %>
   <%= s.text_field :slug %>
   <%= s.submit "Add" %>
