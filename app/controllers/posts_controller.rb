@@ -4,10 +4,8 @@ class PostsController < ApplicationController
     if !logged_in?
       flash[:error] = "You must be logged in to add posts."
       redirect_to root_url
-      return
     else
       sub = Sub.find_by(slug: params[:sub_slug])
-      @subs = Sub.pluck(:slug, :id)
       if sub.nil?
         @post = Post.new
       else
@@ -17,17 +15,17 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(user: current_user, title: post_params[:title],
+    @post = Post.new(user_id: current_user.id, title: post_params[:title],
       url: post_params[:url], description: post_params[:description], sub_id: post_params[:sub_id])
-    if post.save
-      redirect_to post_path(post)
+    if @post.save
+      redirect_to post_path(@post)
     else
-      redirect_to new_post_path
+      render "new"
     end
   end
 
   def index
-    @posts = Post.all
+    redirect_to root_url
   end
 
   def show
@@ -51,8 +49,11 @@ class PostsController < ApplicationController
       if @post.nil?
         redirect_to posts_path
       else
-        @post.update(post_params)
-        redirect_to @post
+        if @post.update(post_params)
+          redirect_to @post
+        else
+          render "edit"
+        end
       end
     else
       redirect_to posts_path
