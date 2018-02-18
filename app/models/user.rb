@@ -11,7 +11,8 @@ class User < ApplicationRecord
 
   validates :password,
     presence: true,
-    length: {minimum: 6}
+    length: {minimum: 6},
+    confirmation: true
 
   has_secure_password
   has_many :posts
