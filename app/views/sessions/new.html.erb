@@ -1,6 +1,16 @@
 <h1>Log in!</h1>
 
 <%= form_for(:session, url: login_path) do |f| %>
+  <% if @errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@errors.count, "error") %> occured.</h2>
+      <ul>
+      <% @errors.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <%= f.label :email %>
   <%= f.email_field :email %>
   <%= f.label :password  %>

@@ -1,19 +1,24 @@
 class SessionsController < ApplicationController
   def new
     if logged_in?
-      flash[:error] = "You're already logged in"
       redirect_to root_url
     end
+    @errors = []
   end
 
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
-    if user && user.authenticate(params[:session][:password])
-      log_in user
-      flash[:success] = "Welcome back " + user.email + "!"
-      redirect_to root_url
+    user = User.find_by(email: session_params[:email])
+    @errors = []
+    if user
+      if user.authenticate(session_params[:password])
+        log_in user
+        redirect_to root_url
+      else
+        @errors.push("Incorrect password! Please try again.")
+        render "new"
+      end
     else
-      flash[:error] = "Failed"
+      @errors.push("User's email %{email} not found." % {email: session_params[:email]})
       render "new"
     end
   end
@@ -22,4 +27,10 @@ class SessionsController < ApplicationController
     log_out
     redirect_to root_path
   end
+
+  private
+  def session_params
+    params.require(:session).permit(:email, :password)
+  end
+
 end
