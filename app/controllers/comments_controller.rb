@@ -6,11 +6,14 @@ class CommentsController < ApplicationController
 
   def create
     if logged_in?
-      post = Post.find(params[:post_id])
-      if !post.nil?
-        comment = post.comments.new(content: params[:comment][:content], user_id: current_user.id)
-        if comment.save
-          redirect_to post_comments_path(post)
+      @post = Post.find(params[:post_id])
+      if !@post.nil?
+        @comment = @post.comments.new(content: params[:comment][:content], user_id: current_user.id)
+        if @comment.save
+          redirect_to post_comments_path(@post)
+        else
+          flash[:error] = "Oops! Something went wrong! Please try again later."
+          render @post
         end
       end
     else
