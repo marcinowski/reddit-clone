@@ -1,5 +1,7 @@
 <%= render "shared/post_detail" %>
 
+<% content_for :sub do %><% @sub.slug %><% end %>
+
 <h1>All comments are here</h1>
 
 <% if logged_in? %>

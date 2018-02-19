@@ -2,12 +2,15 @@ class CommentsController < ApplicationController
 
   def index
     @post = Post.find(params[:post_id])
+    debugger
+    @sub = @post.sub
   end
 
   def create
     if logged_in?
       @post = Post.find(params[:post_id])
       if !@post.nil?
+        @sub = @post.sub
         @comment = @post.comments.new(content: params[:comment][:content], user_id: current_user.id)
         if @comment.save
           redirect_to post_comments_path(@post)

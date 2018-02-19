@@ -8,19 +8,53 @@
   </head>
 
   <body>
-    <p><%= link_to 'all', sub_path(slug: 'all') %>, <% all_subs.each do |s| %><%= link_to s.to_s, sub_path(slug: s) %>, <% end %></p>
     <% flash.each do |message_type, message| %>
       <div class="alert alert-<%= message_type %>"><%= message %></div>
     <% end %>
-    <% if logged_in? %>
-      <p>Welcome <%= @current_user.email %></p>
-      <%= link_to "Account", @current_user %>
-      <%= link_to "Sign out", logout_path, method: :delete %>
-    <% else %>
-      <%= link_to "Log in", login_path %>
-      <%= link_to "Sign up", signup_path %>
-    <% end %>
-    <%= yield %>
-    <%= debug(params) if Rails.env.development? %>
+    <nav style="border-bottom: 1px solid black; position: relative;">
+      <div id="nav-vert" style="display: flex; justify-content: space-around; border-bottom: 1px solid black; background-color: #F0F0F0;">
+        <div>
+          <%= link_to 'ALL', sub_path(slug: 'all') %>
+        </div>
+        <% all_subs.each do |s| %>
+          <span>|</span>
+          <div><%= link_to s.to_s.upcase, sub_path(slug: s) %></div>
+        <% end %>
+      </div>
+      <div style="display: flex; flex-direction: row; padding: 0 10px 0 10px; background-color: #CEE3F8;">
+        <div style="display: flex; flex-direction: row;">
+          <h3 style="margin-right: 10px; color: black"><%= link_to "reddit", root_url %></h3>
+          <h3>
+            <%= yield :sub %>
+          </h3>
+        </div>
+        <div style="position: absolute; right: 5px; bottom: 0px; padding: 5px; text-align: right; display: flex; flex-direction: row; justify-content: space-around;">
+          <% if logged_in? %>
+            <span>Welcome <%= @current_user.email %></span>
+            <span style="margin: 0 5px 0 5px;">|</span>
+            <%= link_to "Account", @current_user %>
+            <span style="margin: 0 5px 0 5px;">|</span>
+            <%= link_to "Sign out", logout_path, method: :delete %>
+          <% else %>
+            <%= link_to "Log in", login_path %>
+            <span style="margin: 0 5px 0 5px;">|</span>
+            <%= link_to "Sign up", signup_path %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+    <main class="container-fluid main">
+      <div class="row">
+        <div class="col-md-9">
+          <%= yield %>
+        </div>
+        <div class="col-md-3" style="padding: 10px">
+          <%= yield :side %>
+        </div
+      </div>
+    </main>
+    <footer>
+      <%= debug(params) if Rails.env.development? %>
+    </footer>
   </body>
 </html>

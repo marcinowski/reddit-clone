@@ -1,6 +1,14 @@
-<h1>Welcome to /subs/<%= @sub.slug %></h1>
+<% content_for :sub do %>
+  <% link_to '/subs/' + @sub.slug, sub_path(slug: @sub.slug) %>
+<% end %>
 
-<%= link_to "+ Post", new_sub_post_path(sub_slug: @sub.slug) %>
+<% content_for :side do %>
+  <div>
+    <%= link_to "Add a post", new_sub_post_path(sub_slug: @sub.slug), class: ["btn btn-primary btn-block"] %>
+    <%= link_to "Add a sub", new_sub_path, class: ["btn btn-primary btn-block"] %>
+  </div>
+<% end %>
+
 <ul>
   <% @posts.each do |post| %>
     <li>
@@ -11,4 +19,3 @@
     </li>
   <% end %>
 </ul>
-<%= link_to "+ Sub", new_sub_path %>
