@@ -11,9 +11,7 @@
   <div class="col-md-3" style="padding: 10px">
     <%= link_to "Add a post", new_sub_post_path(sub_slug: @sub.slug), class: ["btn btn-primary btn-block"] %>
     <%= link_to "Add a sub", new_sub_path, class: ["btn btn-primary btn-block"] %>
-    <div class="container-fluid">
-      <%= yield :sub_side %>
-    </div>
+    <%= yield :sub_side %>
   </div>
 <% end %>
 

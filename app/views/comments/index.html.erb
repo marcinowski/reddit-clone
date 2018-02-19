@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <h3 class="page-header">Comments</h3>
+  <h3 class="page-header"><%= pluralize(@post.comments.count, "Comments") %></h3>
   <% if logged_in? %>
     <div class="row">
       <div class="col-md-6">
@@ -29,8 +29,19 @@
           <h5 class="card-subtitle text-muted"><%= link_to c.user.email, c.user %></h5>
           <h5 class="card-title"><%= c.content %></h5>
           <h5 class="card-subtitle text-muted"><%= c.created_at %></h5>
+          <% if is_owner? %>
+            <h5 class="card-subtitle text-muted"><%= link_to "Edit", edit_post_comment_path(c.post, c) %> <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %></h5>
+          <% end %>
         </div>
       </div>
     <% end %>
   </div>
+<% end %>
+
+<% content_for :sub_side do %>
+  <hr>
+  <% if is_owner? %>
+    <%= link_to "Edit post", edit_post_path(id: @post.id), class: ["btn btn-primary btn-block"] %>
+    <%= link_to "Delete post", @post, method: :delete, class: ["btn btn-primary btn-block"] %>
+  <% end %>
 <% end %>

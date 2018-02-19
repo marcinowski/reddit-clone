@@ -3,6 +3,6 @@
 <p><%= @post.created_at %></p>
 <div><pre><%= @post.description %></pre></div>
 <% if is_owner? %>
-  <%= link_to "Edit", edit_post_path %>
-  <%= link_to "Delete", post_path, method: :delete%>
+  <%= link_to "Edit", edit_post_path(id: @post.id) %>
+  <%= link_to "Delete", post_path(@post), method: :delete%>
 <% end %>
