@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @posts = @user.posts.all
-    @comments = @user.comments.all
+    @comments = @user.comments.order(:created_at)
   end
 
   def new
