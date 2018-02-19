@@ -2,10 +2,18 @@
   <% link_to '/subs/' + @sub.slug, sub_path(slug: @sub.slug) %>
 <% end %>
 
-<% content_for :side do %>
-  <div>
+<% content_for :content do %>
+  <div class="col-md-9">
+    <div lass="container-fluid">
+      <%= content_for?(:sub_main) ? yield(:sub_main) : yield %>
+    </div>
+  </div>
+  <div class="col-md-3" style="padding: 10px">
     <%= link_to "Add a post", new_sub_post_path(sub_slug: @sub.slug), class: ["btn btn-primary btn-block"] %>
     <%= link_to "Add a sub", new_sub_path, class: ["btn btn-primary btn-block"] %>
+    <div class="container-fluid">
+      <%= yield :sub_side %>
+    </div>
   </div>
 <% end %>
 

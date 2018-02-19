@@ -45,12 +45,7 @@
     </nav>
     <main class="container-fluid main">
       <div class="row">
-        <div class="col-md-9">
-          <%= yield %>
-        </div>
-        <div class="col-md-3" style="padding: 10px">
-          <%= yield :side %>
-        </div
+        <%= content_for?(:content) ? yield(:content) : yield %>
       </div>
     </main>
     <footer>
