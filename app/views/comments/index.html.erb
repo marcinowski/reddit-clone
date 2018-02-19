@@ -22,18 +22,15 @@
     </div>
   <% end %>
 
-  <div class="row" style="margin-top: 50px;">
-    <ul>
+  <div class="row" style="margin-top: 50px; margin-left: 10px;">
     <% @post.comments.all.each do |c| %>
-      <li>
-        <p><%= c.user.email %> <%= c.created_at %></p>
-        <p><%= c.content %></p>
-        <% if c.user == current_user %>
-          <%= link_to "Edit", edit_post_comment_path(@post, c) %>
-          <%= link_to "Delete", post_comment_path(@post, c), method: :delete %>
-        <% end %>
-      </li>
+      <div class="card" style="padding: 10px">
+        <div class="card-body">
+          <h5 class="card-subtitle text-muted"><%= link_to c.user.email, c.user %></h5>
+          <h5 class="card-title"><%= c.content %></h5>
+          <h5 class="card-subtitle text-muted"><%= c.created_at %></h5>
+        </div>
+      </div>
     <% end %>
-    </ul>
   </div>
 <% end %>
