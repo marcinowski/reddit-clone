@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   layout "auth", :only => [:new]
   def show
     @user = User.find(params[:id])
+    @posts = @user.posts.all
+    @comments = @user.comments.all
   end
 
   def new

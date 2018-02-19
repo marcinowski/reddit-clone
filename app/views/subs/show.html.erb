@@ -1,14 +1,3 @@
-<% content_for :sub do %>
-  <% link_to '/subs/' + @sub.slug, sub_path(slug: @sub.slug) %>
-<% end %>
-
-<% content_for :side do %>
-  <div>
-    <%= link_to "Add a post", new_sub_post_path(sub_slug: @sub.slug), class: ["btn btn-primary btn-block"] %>
-    <%= link_to "Add a sub", new_sub_path, class: ["btn btn-primary btn-block"] %>
-  </div>
-<% end %>
-
 <ul>
   <% @posts.each do |post| %>
     <li>

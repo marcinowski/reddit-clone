@@ -1,4 +1,5 @@
 class SubsController < ApplicationController
+  layout 'sub'
   def new
     @sub = Sub.new
   end

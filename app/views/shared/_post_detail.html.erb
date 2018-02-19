@@ -1,6 +1,7 @@
 <h1><%= link_to @post.title, @post.url %></h1>
 <p><%= @post.user.email %></p>
-<p><%= @post.description %></p>
+<p><%= @post.created_at %></p>
+<div><pre><%= @post.description %></pre></div>
 <% if is_owner? %>
   <%= link_to "Edit", edit_post_path %>
   <%= link_to "Delete", post_path, method: :delete%>

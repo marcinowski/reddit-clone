@@ -1,8 +1,7 @@
 class CommentsController < ApplicationController
-
+  layout 'sub'
   def index
     @post = Post.find(params[:post_id])
-    debugger
     @sub = @post.sub
   end
 
@@ -26,6 +25,7 @@ class CommentsController < ApplicationController
 
   def edit
     @post = Post.find(params[:post_id])
+    @sub = @post.sub
     @comment = Comment.find(params[:id])
   end
 
