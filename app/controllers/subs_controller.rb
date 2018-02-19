@@ -1,5 +1,5 @@
 class SubsController < ApplicationController
-  layout 'sub'
+  layout 'sub', only: ["show"]
   def new
     @sub = Sub.new
   end

@@ -1,17 +1,22 @@
-<h1>Create a sub</h1>
+<div class="col-md-4 col-md-offset-4">
+  <div>
+    <% if @sub.errors.any? %>
+      <div id="error_explanation">
+        <% @sub.errors.full_messages.each do |msg| %>
+          <div class="alert alert-danger" role="alert"><%= msg %></div>
+        <% end %>
+      </div>
+    <% end %>
+    <h1 class="page-header text-center">Create a sub</h1>
 
-<%= form_for(@sub) do |s| %>
-  <% if @sub.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@sub.errors.count, "error") %> prohibited this sub from being saved:</h2>
-      <ul>
-      <% @sub.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <%= s.label :slug %>
-  <%= s.text_field :slug %>
-  <%= s.submit "Add" %>
-<% end %>
+    <%= form_for(@sub) do |s| %>
+      <div class="form-group">
+        <%= s.label :slug %>
+        <%= s.text_field :slug, class: ["form-control"] %>
+      </div>
+      <div class="form-group">
+        <%= s.submit "Add", class: ["btn btn-primary pull-right"] %>
+      </div>
+    <% end %>
+  </div>
+</div>
