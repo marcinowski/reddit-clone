@@ -1,5 +1,5 @@
 <% content_for :sub do %>
-  <% link_to '/subs/' + @sub.slug, sub_path(slug: @sub.slug) %>
+  <% link_to sub_path(slug: @sub.slug), sub_path(slug: @sub.slug) %>
 <% end %>
 
 <% content_for :content do %>
