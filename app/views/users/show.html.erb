@@ -28,12 +28,14 @@
       <% end %>
     </div>
   </div>
+  <!-- side bar -->
   <div class="col-md-3" style="margin-top: 50px;">
     <div class="container-fluid">
       <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
         border-radius: 0.25rem; padding: 10px">
         <div class="card-body">
-          <h5 class="card-title"><%= @user.email %></h5>
+          <h5 class="card-title"><%= user_path(username: @user.username) %></h5>
+          <h5 class="card-subtitle text-muted"><%= @user.email %></h5>
           <h5 class="card-subtitle text-muted">Account since <%= @user.created_at %></h5>
           <p class="card-text">What a champ!</p>
           <%= link_to "Add a post", new_post_path, class: ["btn btn-primary btn-block"] %>

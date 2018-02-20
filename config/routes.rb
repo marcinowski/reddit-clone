@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
-  resources :users
-  resources :subs, param: :slug, only: [:show, :new, :create, :destroy] do
+  resources :users, param: :username, path: :u
+  resources :subs, param: :slug, path: :r, only: [:show, :new, :create, :destroy] do
     resources :posts, only: [:new]
   end
   resources :posts, only: [:index, :show, :edit, :update, :destroy, :new, :create] do

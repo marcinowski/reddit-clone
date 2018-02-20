@@ -8,9 +8,6 @@
   </head>
 
   <body>
-    <% flash.each do |message_type, message| %>
-      <div class="alert alert-<%= message_type %>"><%= message %></div>
-    <% end %>
     <nav style="border-bottom: 1px solid black; position: relative;">
       <div id="nav-vert" style="display: flex; justify-content: space-around; border-bottom: 1px solid black; background-color: #F0F0F0;">
         <div>
@@ -30,9 +27,9 @@
         </div>
         <div style="position: absolute; right: 5px; bottom: 0px; padding: 5px; text-align: right; display: flex; flex-direction: row; justify-content: space-around;">
           <% if logged_in? %>
-            <span>Welcome <%= @current_user.email %></span>
+            <span>Welcome <%= @current_user.username %>!</span>
             <span style="margin: 0 5px 0 5px;">|</span>
-            <%= link_to "Account", @current_user %>
+            <%= link_to "Account", user_path(username: @current_user.username) %>
             <span style="margin: 0 5px 0 5px;">|</span>
             <%= link_to "Sign out", logout_path, method: :delete %>
           <% else %>
@@ -43,6 +40,9 @@
         </div>
       </div>
     </nav>
+    <% flash.each do |message_type, message| %>
+      <div class="alert alert-<%= message_type %>"><%= message %></div>
+    <% end %>
     <main class="container-fluid main">
       <div class="row">
         <%= content_for?(:content) ? yield(:content) : yield %>

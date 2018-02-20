@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(username: params[:username])
     @posts = @user.posts.all
     @comments = @user.comments.order(:created_at)
   end
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Welcome to Reddit!"
       log_in @user
-      redirect_to @user
+      redirect_to user_path(username: @user.username) 
     else
       render "new"
     end
@@ -28,6 +28,6 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 end
