@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   include PostsHelper
   def new
+    @title = 'Create a Post'
     if !logged_in?
       flash[:error] = "You must be logged in to add posts."
       redirect_to root_url
@@ -33,6 +34,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @title = 'Edit Post'
     if logged_in?
       @post = Post.find_by(id: params[:id], user: current_user)
       if @post.nil?

@@ -1,13 +1,1 @@
-<h1>Update a post</h1>
-
-<%= form_for(@post) do |p| %>
-  <%= p.label :url %>
-  <%= p.url_field :url %>
-  <%= p.label :title %>
-  <%= p.text_field :title %>
-  <%= p.label :description %>
-  <%= p.text_area :description %>
-  <%= p.submit "Update a post" %>
-<% end %>
-
-<%= link_to "Back", @post %>
+<%= render 'shared/post_form' %>
