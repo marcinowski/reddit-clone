@@ -12,7 +12,7 @@
       <div class="col-md-6">
         <%= form_with(model: [ @post, @post.comments.build ], local: true) do |c| %>
           <div class="form-group">
-            <%= c.text_area :content, class: ['form-control'] %>
+            <%= c.text_area :content, class: ['form-control'], placeholder: 'Add a comment' %>
           </div>
           <div class="form-group">
             <%= c.submit "Save", class: ['btn btn-success pull-right'] %>
@@ -24,14 +24,15 @@
 
   <div class="row" style="margin-top: 50px; margin-left: 10px;">
     <% @post.comments.all.each do |c| %>
-      <div class="card" style="padding: 10px">
+      <div class="card comment-card" id="c<%= c.id %>">
         <div class="card-body">
           <h5 class="card-subtitle text-muted"><%= link_to c.user.email, c.user %></h5>
           <h5 class="card-title"><%= c.content %></h5>
-          <h5 class="card-subtitle text-muted"><%= c.created_at %></h5>
-          <% if is_owner? %>
-            <h5 class="card-subtitle text-muted"><%= link_to "Edit", edit_post_comment_path(c.post, c) %> <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %></h5>
-          <% end %>
+          <h5 class="card-subtitle text-muted"> <%= link_to "#", post_comments_path(c.post) + '#c' + c.id.to_s %> | <%= c.created_at %>
+            <% if is_comment_owner?(c) %>
+              <%= link_to "Edit", edit_post_comment_path(c.post, c) %> | <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %>
+            <% end %>
+          </h5>
         </div>
       </div>
     <% end %>
