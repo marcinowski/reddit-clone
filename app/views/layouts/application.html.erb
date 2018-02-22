@@ -31,9 +31,9 @@
             <span style="margin: 0 5px 0 5px;">|</span>
             <%= link_to "Account", user_path(username: @current_user.username) %>
             <span style="margin: 0 5px 0 5px;">|</span>
-            <%= link_to "Sign out", logout_path, method: :delete %>
+            <%= link_to "Sign out", logout_path + '?ref_path=' + request.path, method: :delete %>
           <% else %>
-            <%= link_to "Log in", login_path %>
+            <%= link_to "Log in", login_path + '?ref_path=' + request.path %>
             <span style="margin: 0 5px 0 5px;">|</span>
             <%= link_to "Sign up", signup_path %>
           <% end %>

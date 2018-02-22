@@ -9,7 +9,7 @@
     <% end %>
     <h1 class="page-header text-center">Log in!</h1>
 
-    <%= form_for(:session, url: login_path) do |f| %>
+    <%= form_for(:session, url: login_path + '?ref_path=' + @ref_path) do |f| %>
       <div class="col-md-8 col-md-offset-2">
         <div class="form-group">
           <%= f.label :email %>

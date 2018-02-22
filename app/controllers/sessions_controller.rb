@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
       redirect_to root_url
     end
     @errors = []
+    @ref_path = params[:ref_path]
   end
 
   def create
@@ -12,7 +13,11 @@ class SessionsController < ApplicationController
     if user
       if user.authenticate(session_params[:password])
         log_in user
-        redirect_to root_url
+        if params[:ref_path]
+          redirect_to params[:ref_path]
+        else
+          redirect_to root_url
+        end
       else
         @errors.push("Incorrect password! Please try again.")
         render "new"
@@ -25,7 +30,11 @@ class SessionsController < ApplicationController
 
   def destroy
     log_out
-    redirect_to root_path
+    if params[:ref_path]
+      redirect_to params[:ref_path]
+    else
+      redirect_to root_url
+    end
   end
 
   private
