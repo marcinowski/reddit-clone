@@ -16,7 +16,7 @@ RUN bundle install
 WORKDIR /reddit
 COPY . /reddit/
 
-CMD /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && ./bin/rails server -b 0.0.0.0 -p 3000"
+CMD /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && ./bin/rails db:migrate && ./bin/rails server -b 0.0.0.0 -p 3000"
 
 ###################################
 # Instructions for AWS alpine 3.7 #
