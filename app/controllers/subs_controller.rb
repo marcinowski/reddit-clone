@@ -7,7 +7,7 @@ class SubsController < ApplicationController
   def create
     @sub = Sub.new(slug: sub_params)
     if @sub.save
-      redirect_to sub_path(slug: sub.slug)
+      redirect_to sub_path(slug: @sub.slug)
     else
       render "new"
     end
