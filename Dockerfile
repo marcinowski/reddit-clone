@@ -7,7 +7,7 @@ RUN apk add --update \
   tzdata \
   && rm -rf /var/cache/apk/*
 
-RUN gem install bundler3
+RUN gem install bundler
 
 WORKDIR /reddit
 COPY Gemfile* /reddit/
