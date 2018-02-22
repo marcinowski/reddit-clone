@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
         if @comment.save
           redirect_to post_comments_path(@post)
         else
-          flash[:error] = "Oops! Something went wrong! Please try again later."
+          flash[:danger] = "Oops! Something went wrong! Please try again later."
           render @post
         end
       end

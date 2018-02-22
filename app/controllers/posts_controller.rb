@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   def new
     @title = 'Create a Post'
     if !logged_in?
-      flash[:error] = "You must be logged in to add posts."
+      flash[:danger] = "You must be logged in to add posts."
       redirect_to root_url
     else
       sub = Sub.find_by(slug: params[:sub_slug])
@@ -71,7 +71,7 @@ class PostsController < ApplicationController
       if !post.nil?
         post.delete
       else
-        flash[:error] = "It's not your post dude"
+        flash[:danger] = "It's not your post dude"
       end
       redirect_to posts_path
     end
