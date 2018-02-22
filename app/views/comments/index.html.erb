@@ -9,11 +9,11 @@
             <pre><%= @post.description %></pre>
           </div>
           <div class="card-subtitle">
-            Posted by <%= @post.user.username %>
+            Posted by <%= link_to @post.user.username, user_path(username: @post.user.username) %>
             on <%= @post.created_at %>
             <% if is_post_owner? %>
-              <%= link_to "Edit", edit_post_path(id: @post.id) %>
-              <%= link_to "Delete", post_path(@post), method: :delete%>
+              | <%= link_to "Edit", edit_post_path(id: @post.id) %>
+              | <%= link_to "Delete", post_path(@post), method: :delete%>
             <% end %>
           </div>
         </div>
@@ -41,11 +41,14 @@
     <% @post.comments.all.each do |c| %>
       <div class="card comment-card" id="c<%= c.id %>">
         <div class="card-body">
-          <h5 class="card-subtitle text-muted"><%= link_to c.user.email, c.user %></h5>
+          <h5 class="card-subtitle text-muted">
           <h5 class="card-title"><%= c.content %></h5>
-          <h5 class="card-subtitle text-muted"> <%= link_to "#", post_comments_path(c.post) + '#c' + c.id.to_s %> | <%= c.created_at %>
+          <h5 class="card-subtitle text-muted">
+            <%= link_to c.user.username, user_path(username: c.user.username) %>
+             | <%= link_to "#", post_comments_path(c.post) + '#c' + c.id.to_s %>
+             | <%= c.created_at %>
             <% if is_comment_owner?(c) %>
-              <%= link_to "Edit", edit_post_comment_path(c.post, c) %> | <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %>
+             | <%= link_to "Edit", edit_post_comment_path(c.post, c) %> | <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %>
             <% end %>
           </h5>
         </div>

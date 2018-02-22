@@ -9,7 +9,7 @@
     <% end %>
     <h1 class="page-header text-center">Become a member of our community!</h1>
 
-    <%= form_for(@user) do |f| %>
+    <%= form_for(@user, url: new_user_path(@user) ) do |f| %>
       <div class="col-md-8 col-md-offset-2">
         <div class="form-group">
           <%= f.label :username %>
