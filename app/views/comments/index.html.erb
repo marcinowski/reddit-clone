@@ -21,7 +21,7 @@
     </div>
   </div>
 
-  <h3 class="page-header"><%= pluralize(@post.comments.count, "Comments") %></h3>
+  <h3 class="page-header"><%= pluralize(@post.comments.count, "Comment") %></h3>
   <% if logged_in? %>
     <div class="row">
       <div class="col-md-6">

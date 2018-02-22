@@ -4,7 +4,7 @@
         <div class="card-body">
           <h4 class="card-title"><%= link_to post.title, post.url %></h4>
           <h5 class="card-subtitle text-muted">Posted by: <%= post.user.username %> on <%= post.created_at %></h5>
-          <h5 class="card-subtitle text-muted"><%= link_to pluralize(post.comments.count, "comments"), post_comments_path(post_id: post.id) %></h5>
+          <h5 class="card-subtitle text-muted"><%= link_to pluralize(post.comments.count, "comment"), post_comments_path(post_id: post.id) %></h5>
         </div>
       </div>
     <% end %>

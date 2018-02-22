@@ -9,7 +9,7 @@
           <div class="card-body">
             <h5 class="card-title"><%= link_to p.title, p, class: ["btn btn-link"]  %></h5>
             <h5 class="card-subtitle text-muted">Posted: <%= p.created_at %></h5>
-            <p class="card-text"><%= pluralize(p.comments.count, "comments") %></p>
+            <p class="card-text"><%= pluralize(p.comments.count, "comment") %></p>
           </div>
         </div>
       <% end %>
