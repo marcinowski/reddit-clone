@@ -9,6 +9,20 @@
     </div>
   </div>
   <div class="col-md-3" style="padding: 10px">
+    <div style="padding-bottom: 10px">
+      <%= form_tag("/search/results", method: "get") do %>
+        <div class="form-inline">
+          <div class="form-group">
+            <%= text_field_tag :q, "", class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <div class="center-block">
+              <%= submit_tag "Search", class: ["btn btn-primary center-block"] %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
     <%= link_to "Add a post", new_sub_post_path(sub_slug: @sub.slug), class: ["btn btn-primary btn-block"] %>
     <%= link_to "Add a sub", new_sub_path, class: ["btn btn-primary btn-block"] %>
     <%= yield :sub_side %>

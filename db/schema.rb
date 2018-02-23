@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220135024) do
+ActiveRecord::Schema.define(version: 20180223130931) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(version: 20180220135024) do
     t.integer "sub_id"
     t.index ["sub_id"], name: "index_posts_on_sub_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "search_tables", force: :cascade do |t|
+    t.string "word"
+    t.string "table"
+    t.integer "ref_id"
+    t.index ["word", "table", "ref_id"], name: "index_search_tables_on_word_and_table_and_ref_id"
+    t.index ["word"], name: "index_search_tables_on_word"
   end
 
   create_table "subs", force: :cascade do |t|

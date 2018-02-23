@@ -1,0 +1,2 @@
+class SearchTable < ApplicationRecord
+end

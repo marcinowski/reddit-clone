@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if @user.save
       flash[:success] = "Welcome to Reddit!"
       log_in @user
-      redirect_to user_path(username: @user.username) 
+      redirect_to user_path(username: @user.username)
     else
       render "new"
     end

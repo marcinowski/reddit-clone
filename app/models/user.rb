@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include SearchableModel, SearchHelper
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   VALID_USERNAME_REGEX = /\A[a-zA-Z]+_*\z/
 
@@ -23,4 +25,21 @@ class User < ApplicationRecord
   has_secure_password
   has_many :posts
   has_many :comments
+
+  after_create :save_model_for_search
+
+  after_update :update_model_for_search
+
+  before_destroy :destroy_model_from_search
+
+  private
+    def save_model_for_search
+      save_for_search(self.username, self.class.table_name, self.id)
+    end
+
+  private
+    def update_model_for_search
+      update_for_search(self.username, self.class.table_name, self.id)
+    end
+
 end

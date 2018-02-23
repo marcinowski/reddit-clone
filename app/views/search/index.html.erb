@@ -1,0 +1,12 @@
+<div class="col-md-4 col-md-offset-4" style="margin-top: 200px">
+  <%= form_tag("/search/results", method: "get") do %>
+    <div class="form-group">
+      <%= text_field_tag :q, "", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <div class="center-block">
+        <%= submit_tag "Search", class: ["btn btn-primary center-block"] %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,4 +1,8 @@
+require_dependency 'app/lib/searchable_model'
+
 class Post < ApplicationRecord
+  include SearchHelper, SearchableModel
+
   has_many :comments, dependent: :destroy
   belongs_to :user
   belongs_to :sub
@@ -11,6 +15,24 @@ class Post < ApplicationRecord
     allow_blank: true,
     format: {with: URI.regexp(['http', 'https'])}
   validate :url_or_description?
+
+  after_create :save_model_for_search
+
+  after_update :update_model_for_search
+
+  before_destroy :destroy_model_from_search
+
+  private
+    def save_model_for_search
+      save_for_search(self.title, self.class.table_name, self.id)
+      save_for_search(self.description, self.class.table_name, self.id)
+    end
+
+  private
+    def update_model_for_search
+      update_for_search(self.title, self.class.table_name, self.id)
+      update_for_search(self.description, self.class.table_name, self.id)
+    end
 
   def url_or_description?
     if url.blank? && description.blank?
