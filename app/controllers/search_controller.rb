@@ -3,10 +3,12 @@ class SearchController < ApplicationController
   end
 
   def results
-    @queryString = params[:q].downcase
-    if params[:q].nil?
+    @queryString = params[:q]
+    if @queryString.nil?
       redirect_to '/search'
+      return
     end
+    @queryString.downcase!
     results = SearchTable.order(:table).where(word: @queryString)
     objects = {}
     results.each do |o|

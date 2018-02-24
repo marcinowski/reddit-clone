@@ -1,32 +1,33 @@
 <div class="col-md-6 col-md-offset-3">
   <h2 class="page-header">Search results for '<%= @queryString %>'</h2>
   <h3 class="page-header">Posts</h3>
-  <% @posts.each do |r| %>
-    <div class="card" style="padding: 10px">
+  <% @posts.each do |p| %>
+    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem; padding: 10px">
       <div class="card-body">
-        <div class="card-title">
-          <%= link_to r.title, post_comments_path(post_id: r.id) %>
-        </div>
+        <h5 class="card-title"><%= link_to p.title, p, class: ["btn btn-link"]  %></h5>
+        <h5 class="card-subtitle text-muted">Posted: <%= p.created_at %></h5>
+        <p class="card-text"><%= pluralize(p.comments.count, "comment") %></p>
       </div>
     </div>
   <% end %>
   <h3 class="page-header">Comments</h3>
-  <% @comments.each do |r| %>
-    <div class="card" style="padding: 10px">
+  <% @comments.each do |c| %>
+    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem; padding: 10px">
       <div class="card-body">
-        <div class="card-title">
-          <%= link_to r.post.title, post_comments_path(post_id: r.post.id) + '#c' + r.id.to_s %>
-        </div>
+        <h5 class="card-subtitle text-muted">Posted: <%= c.created_at %></h5>
+        <h5 class="card-title">Added comment to <%= link_to c.post.title, c.post, class: ["btn btn-link"]  %></h5>
+        <p class="card-text"><%= c.content %></p>
       </div>
     </div>
   <% end %>
   <h3 class="page-header">Users</h3>
-  <% @users.each do |r| %>
-    <div class="card" style="padding: 10px">
+  <% @users.each do |u| %>
+    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem; padding: 10px">
       <div class="card-body">
-        <div class="card-title">
-          <%= link_to r.title, user_path(username: r.username) %>
-        </div>
+        <h5 class="card-title">User: <%= link_to u.username, user_path(username: u.username), class: ["btn btn-link"] %></h5>
       </div>
     </div>
   <% end %>
