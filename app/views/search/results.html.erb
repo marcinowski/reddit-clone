@@ -2,14 +2,7 @@
   <h2 class="page-header">Search results for '<%= @queryString %>'</h2>
   <h3 class="page-header">Posts</h3>
   <% @posts.each do |p| %>
-    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem; padding: 10px">
-      <div class="card-body">
-        <h5 class="card-title"><%= link_to p.title, p, class: ["btn btn-link"]  %></h5>
-        <h5 class="card-subtitle text-muted">Posted: <%= p.created_at %></h5>
-        <p class="card-text"><%= pluralize(p.comments.count, "comment") %></p>
-      </div>
-    </div>
+    <%= render 'shared/post_card', {post: p}%>
   <% end %>
   <h3 class="page-header">Comments</h3>
   <% @comments.each do |c| %>
