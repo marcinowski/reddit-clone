@@ -4,6 +4,7 @@ class Post < ApplicationRecord
   include SearchHelper, SearchableModel
 
   has_many :comments, dependent: :destroy
+  has_many :rating_posts, dependent: :destroy
   belongs_to :user
   belongs_to :sub
   validates :sub,

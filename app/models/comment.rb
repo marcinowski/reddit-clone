@@ -2,7 +2,7 @@ require_dependency 'app/lib/searchable_model'
 
 class Comment < ApplicationRecord
   include SearchableModel, SearchHelper
-
+  has_many :rating_comments, dependent: :destroy
   belongs_to :user
   belongs_to :post
 
