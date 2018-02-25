@@ -18,12 +18,13 @@
           <div><%= link_to s.to_s.upcase, sub_path(slug: s) %></div>
         <% end %>
       </div>
-      <div style="display: flex; flex-direction: row; padding: 0 10px 0 10px; background-color: #CEE3F8;">
-        <div style="display: flex; flex-direction: row;">
-          <h3 style="margin-right: 10px; color: black"><%= link_to "reddit", root_url %></h3>
-          <h3>
-            <%= yield :sub %>
-          </h3>
+      <div style="display: flex; flex-direction: row; padding: 0 10px 0 10px; background-color: #CEE3F8; height: 80px;">
+        <div style="position: absolute; bottom: 0px; display: flex; flex-direction: row; justify-content: space-around;">
+          <%= link_to root_url do %>
+            <img src="/assets/blue.png" height="40px" style="padding: 0 5px 0 5px"/>
+          <% end %>
+          <h3 style="margin-right: 10px; margin-bottom: 5px;"><%= link_to "reddit", root_url %></h3>
+          <h3 style="margin-bottom: 5px;"><%= yield :sub %></h3>
         </div>
         <div style="position: absolute; right: 5px; bottom: 0px; padding: 5px; text-align: right; display: flex; flex-direction: row; justify-content: space-around;">
           <% if logged_in? %>
