@@ -9,7 +9,7 @@
             <pre><%= @post.description %></pre>
           </div>
           <div class="card-subtitle">
-            Rating <%= @post.rating_posts.sum(:rating) %>
+            <%= render 'shared/rating', {model: 'post', id: @post.id, rating: @post.rating_posts.sum(:rating)} %>
             Posted by <%= link_to @post.user.username, user_path(username: @post.user.username) %>
             on <%= @post.created_at %>
             <% if is_post_owner? %>
