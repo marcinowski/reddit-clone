@@ -1,0 +1,14 @@
+<div class="card comment-card" id="c<%= comment.id %>">
+  <div class="card-body">
+    <h5 class="card-subtitle text-muted">
+    <h5 class="card-title"><%= comment.content %></h5>
+    <h5 class="card-subtitle text-muted">
+      <%= link_to comment.user.username, user_path(username: comment.user.username) %>
+       | <%= link_to "#", post_comments_path(comment.post) + '#c' + comment.id.to_s %>
+       | <%= comment.created_at %>
+      <% if is_comment_owner?(comment) %>
+       | <%= link_to "Edit", edit_post_comment_path(comment.post, comment) %> | <%= link_to "Delete", post_comment_path(comment.post, comment), method: :delete %>
+      <% end %>
+    </h5>
+  </div>
+</div>

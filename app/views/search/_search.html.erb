@@ -1,0 +1,13 @@
+<div class="col-md-4 col-md-offset-4">
+  <img align="center" src="/assets/blue.png" height="240" class="center-block" style="padding: 20px"/>
+  <%= form_tag("/search/results", method: "get") do %>
+    <div class="form-group">
+      <%= text_field_tag :q, "", placeholder: "What's on your mind?", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <div class="center-block">
+        <%= submit_tag "Search", class: ["btn btn-primary center-block"] %>
+      </div>
+    </div>
+  <% end %>
+</div>

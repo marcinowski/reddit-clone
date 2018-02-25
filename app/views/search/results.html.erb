@@ -1,3 +1,4 @@
+<%= render 'search/search' %>
 <div class="col-md-6 col-md-offset-3">
   <h2 class="page-header">Search results for '<%= @queryString %>'</h2>
   <h3 class="page-header">Posts</h3>
@@ -6,22 +7,10 @@
   <% end %>
   <h3 class="page-header">Comments</h3>
   <% @comments.each do |c| %>
-    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem; padding: 10px">
-      <div class="card-body">
-        <h5 class="card-subtitle text-muted">Posted: <%= c.created_at %></h5>
-        <h5 class="card-title">Added comment to <%= link_to c.post.title, c.post, class: ["btn btn-link"]  %></h5>
-        <p class="card-text"><%= c.content %></p>
-      </div>
-    </div>
+    <%= render 'shared/comment_card', {comment: c} %>
   <% end %>
   <h3 class="page-header">Users</h3>
   <% @users.each do |u| %>
-    <div class="card" style="background-color: #fff; border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem; padding: 10px">
-      <div class="card-body">
-        <h5 class="card-title">User: <%= link_to u.username, user_path(username: u.username), class: ["btn btn-link"] %></h5>
-      </div>
-    </div>
+    <%= render 'shared/user_card', {user: u} %>
   <% end %>
 </div>

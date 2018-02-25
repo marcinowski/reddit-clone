@@ -39,20 +39,7 @@
 
   <div class="row" style="margin-top: 50px; margin-left: 10px;">
     <% @post.comments.all.each do |c| %>
-      <div class="card comment-card" id="c<%= c.id %>">
-        <div class="card-body">
-          <h5 class="card-subtitle text-muted">
-          <h5 class="card-title"><%= c.content %></h5>
-          <h5 class="card-subtitle text-muted">
-            <%= link_to c.user.username, user_path(username: c.user.username) %>
-             | <%= link_to "#", post_comments_path(c.post) + '#c' + c.id.to_s %>
-             | <%= c.created_at %>
-            <% if is_comment_owner?(c) %>
-             | <%= link_to "Edit", edit_post_comment_path(c.post, c) %> | <%= link_to "Delete", post_comment_path(c.post, c), method: :delete %>
-            <% end %>
-          </h5>
-        </div>
-      </div>
+      <%= render 'shared/comment_card', {comment: c} %>
     <% end %>
   </div>
 <% end %>
