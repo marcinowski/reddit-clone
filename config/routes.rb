@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post 'ratings/', to: 'ratings#vote'
   get '/search', to: 'search#index'
   get '/search/results', to: 'search#results'
   get '/search', to: 'search#index'
