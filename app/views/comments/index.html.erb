@@ -2,20 +2,26 @@
 
   <div class="row">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-body">
-          <h1><%= link_to @post.title, @post.url %></h1>
-          <div class="card-text">
-            <pre><%= @post.description %></pre>
-          </div>
-          <div class="card-subtitle">
-            <%= render 'shared/rating', {model: 'post', id: @post.id, rating: @post.rating_posts.sum(:rating)} %>
-            Posted by <%= link_to @post.user.username, user_path(username: @post.user.username) %>
-            on <%= @post.created_at %>
-            <% if is_post_owner? %>
-              | <%= link_to "Edit", edit_post_path(id: @post.id) %>
-              | <%= link_to "Delete", post_path(@post), method: :delete%>
-            <% end %>
+      <div class="row">
+        <div class="col-md-1">
+          <%= render 'shared/rating', {model: 'post', id: @post.id, rating: @post.rating_posts.sum(:rating)} %>
+        </div>
+        <div class="col-md-11">
+          <div class="card">
+            <div class="card-body">
+              <h1><%= link_to @post.title, @post.url %></h1>
+              <div class="card-text">
+                <pre><%= @post.description %></pre>
+              </div>
+              <div class="card-subtitle">
+                Posted by <%= link_to @post.user.username, user_path(username: @post.user.username) %>
+                on <%= @post.created_at %>
+                <% if is_post_owner? %>
+                  | <%= link_to "Edit", edit_post_path(id: @post.id) %>
+                  | <%= link_to "Delete", post_path(@post), method: :delete%>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
