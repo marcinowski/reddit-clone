@@ -1,5 +1,6 @@
 class Sub < ApplicationRecord
   has_many :posts
+  has_one :sub_info
   validates_uniqueness_of :slug
   validates :slug,
     presence: true,

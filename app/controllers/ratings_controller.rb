@@ -25,9 +25,9 @@ class RatingsController < ApplicationController
         object.save
       end
     elsif model == 'comment'
-      object = RatingComment.find_by(user_id: current_user.id, post_id: id)
+      object = RatingComment.find_by(user_id: current_user.id, comment_id: id)
       if object.nil?
-        RatingComment.create(user_id: current_user.id, post_id: id, rating: dir)
+        RatingComment.create(user_id: current_user.id, comment_id: id, rating: dir)
       else
         object.rating = dir
         object.save
