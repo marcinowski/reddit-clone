@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180225113442) do
+ActiveRecord::Schema.define(version: 20180228140429) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -62,6 +62,16 @@ ActiveRecord::Schema.define(version: 20180225113442) do
     t.integer "ref_id"
     t.index ["word", "table", "ref_id"], name: "index_search_tables_on_word_and_table_and_ref_id"
     t.index ["word"], name: "index_search_tables_on_word"
+  end
+
+  create_table "sub_subscriptions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "sub_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sub_id"], name: "index_sub_subscriptions_on_sub_id"
+    t.index ["user_id", "sub_id"], name: "index_sub_subscriptions_on_user_id_and_sub_id", unique: true
+    t.index ["user_id"], name: "index_sub_subscriptions_on_user_id"
   end
 
   create_table "subs", force: :cascade do |t|

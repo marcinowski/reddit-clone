@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :subs, param: :slug, path: :r, only: [:show, :new, :create, :destroy] do
     resources :posts, only: [:new]
   end
+  post '/subscribe', to: 'subs#subscribe'
+  post '/unsubscribe', to: 'subs#unsubscribe'
   resources :posts, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     resources :comments, only: [:index, :new, :create, :edit, :update, :destroy]
   end

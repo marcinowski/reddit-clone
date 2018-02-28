@@ -26,6 +26,18 @@ class SubsController < ApplicationController
   def destroy
   end
 
+  def subscribe
+    user_id = params[:user_id]
+    sub_id = params[:sub_id]
+    SubSubscription.create(user_id: user_id, sub_id: sub_id)
+  end
+
+  def unsubscribe
+    user_id = params[:user_id]
+    sub_id = params[:sub_id]
+    SubSubscription.find_by(user_id: user_id, sub_id: sub_id).delete
+  end
+
   private
   def sub_params
     params.require(:sub).require(:slug)
