@@ -1,11 +1,24 @@
 <% content_for :sub_main do %>
-    <% @posts.each do |post| %>
-    <div style="display: flex; flex-direction: row; align-items: center; padding-left: 10px;">
-      <%= render 'shared/rating', {model: 'post', id: post.id, rating: post.rating_posts.sum(:rating), vote: post.rating_posts.find_by(user_id: current_user.id)} %>
-      <%= render 'shared/post_card', {post: post}%>
-    </div>
-    <% end %>
-  </ul>
+  <% @posts.each do |post| %>
+  <div style="display: flex; flex-direction: row; align-items: center; padding-left: 10px;">
+    <%= render 'shared/rating', {model: 'post', id: post.id, rating: post.rating_posts.sum(:rating), vote: post.rating_posts.find_by(user_id: current_user.id)} %>
+    <%= render 'shared/post_card', {post: post}%>
+  </div>
+  <% end %>
+  <nav>
+    <ul class="pagination">
+      <% if @prev_page %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%=@prev_page%>">Previous</a>
+        </li>
+      <% end %>
+      <% if @next_page %>
+        <li class="page-item">
+          <a class="page-link" href="?page=<%=@next_page%>">Next</a>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
 <% end %>
 
 <% content_for :sub_side do %>

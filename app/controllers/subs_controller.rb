@@ -19,8 +19,23 @@ class SubsController < ApplicationController
       @posts = Post.all
     else
       @sub = Sub.find_by(slug: params[:slug])
-      @posts = @sub.posts.all
+      @posts = @sub.posts
     end
+    # pagination
+    limit = 2
+    page = 0
+    pcount = @posts.count
+    unless params[:page].nil?
+      page = params[:page].to_i.abs
+    end
+    offset = page * limit
+    if offset < pcount - limit
+      @next_page = page + 1
+    end
+    if page > 0
+      @prev_page = page - 1
+    end
+    @posts = @posts.limit(limit).offset(offset)
   end
 
   def destroy
