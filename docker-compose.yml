@@ -1,0 +1,7 @@
+version: "3.5"
+
+services:
+  reddit:
+    ports:
+      - "3000:3000"
+    image: reddit
