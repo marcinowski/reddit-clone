@@ -3,7 +3,10 @@
   <div class="row">
     <div class="col-md-6">
       <div style="display: flex; flex-direction: row; align-items: center; padding-left: 10px;">
-        <%= render 'shared/rating', {model: 'post', id: @post.id, rating: @post.rating_posts.sum(:rating), vote: @post.rating_posts.find_by(user_id: current_user.id)} %>
+        <%=
+          render 'shared/rating',
+          {model: 'post', id: @post.id, rating: @post.rating_posts.sum(:rating), vote: @post.rating_posts.find_by(user: current_user)}
+        %>
         <div class="card" style="margin-left: 20px;">
           <div class="card-body">
             <h1><%= link_to @post.title, @post.url %></h1>
@@ -43,7 +46,10 @@
   <div class="row" style="margin-top: 50px; margin-left: 10px;">
     <% @post.comments.all.each do |c| %>
         <div style="display: flex; flex-direction: row;">
-          <%= render 'shared/rating', {model: 'comment', id: c.id, rating: c.rating_comments.sum(:rating), vote: c.rating_comments.find_by(user_id: current_user.id)} %>
+          <%=
+            render 'shared/rating',
+            {model: 'comment', id: c.id, rating: c.rating_comments.sum(:rating), vote: c.rating_comments.find_by(user: current_user)}
+          %>
           <%= render 'shared/comment_card', {comment: c} %>
         </div>
     <% end %>

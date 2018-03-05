@@ -6,6 +6,12 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   VALID_USERNAME_REGEX = /\A[a-zA-Z]+_*\z/
 
+  has_many :posts
+  has_many :comments
+  has_one :user_permission
+  has_many :sub_bans
+  has_many :sub_moderators
+
   before_save {self.email = email.downcase}
   validates :email,
     presence: true,
@@ -25,10 +31,8 @@ class User < ApplicationRecord
     uniqueness: {case_sensitive: true}
 
   has_secure_password
-  has_many :posts
-  has_many :comments
 
-  after_create :save_model_for_search
+  after_create :create_user_permission, :save_model_for_search
 
   after_update :update_model_for_search
 

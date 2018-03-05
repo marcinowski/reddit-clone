@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  users: one
+  is_superuser: false
+  can_comment: false
+  can_post: false
+  can_login: false
+  can_sub: false
+
+two:
+  users: two
+  is_superuser: false
+  can_comment: false
+  can_post: false
+  can_login: false
+  can_sub: false

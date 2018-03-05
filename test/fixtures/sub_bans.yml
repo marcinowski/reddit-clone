@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  users: one
+  subs: one
+  is_banned: false
+  cannot_comment: false
+  cannot_post: false
+
+two:
+  users: two
+  subs: two
+  is_banned: false
+  cannot_comment: false
+  cannot_post: false
