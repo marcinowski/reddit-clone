@@ -1,6 +1,6 @@
 module UserPermissionsHelper
   # auth
-  def can_login user
+  def can_login? user
     user.user_permission.can_login
   end
 
@@ -13,7 +13,7 @@ module UserPermissionsHelper
   end
 
   # admins
-  def is_superuser user
+  def is_superuser? user
     user.user_permission.is_superuser
   end
 
@@ -25,7 +25,7 @@ module UserPermissionsHelper
     user.user_permission.update(is_superuser: false)
   end
 
-  def is_moderator (user, sub)
+  def is_moderator? (user, sub)
     p = user.sub_permissions.find_by(subs_id: sub.id)
     if p.nil?
       return false
@@ -46,7 +46,7 @@ module UserPermissionsHelper
   end
 
   # bans
-  def is_user_banned user
+  def is_user_banned? user
     user.user_permission.is_banned
   end
 
@@ -58,7 +58,7 @@ module UserPermissionsHelper
     user.user_permission.update(is_banned: false)
   end
 
-  def is_banned_from_sub (user, sub)
+  def is_banned_from_sub? (user, sub)
     p = user.sub_permissions.find_by(subs_id: sub.id)
     if p.nil?
       return false
@@ -79,7 +79,7 @@ module UserPermissionsHelper
   end
 
   # ban subs
-  def can_add_subs user
+  def can_add_subs? user
     user.user_permission.can_sub
   end
 
@@ -92,7 +92,7 @@ module UserPermissionsHelper
   end
 
   # ban comments
-  def can_comment user
+  def can_comment? user
     user.user_permission.can_comment
   end
 
@@ -104,7 +104,7 @@ module UserPermissionsHelper
     user.user_permission.update(can_comment: true)
   end
 
-  def can_comment_in_sub (user, sub)
+  def can_comment_in_sub? (user, sub)
     p = user.sub_permissions.find_by(subs_id: sub.id)
     if p.nil?
       return true
@@ -125,7 +125,7 @@ module UserPermissionsHelper
   end
 
   # ban posts
-  def can_post user
+  def can_post? user
     user.user_permission.can_post
   end
 
@@ -137,7 +137,7 @@ module UserPermissionsHelper
     user.user_permission.update(can_post: true)
   end
 
-  def can_post_in_sub (user, sub)
+  def can_post_in_sub? (user, sub)
     p = user.sub_permissions.find_by(subs_id: sub.id)
     if p.nil?
       return true
