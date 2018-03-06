@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :user_permission
   has_many :sub_bans
   has_many :sub_moderators
+  has_many :sub_subscriptions
 
   before_save {self.email = email.downcase}
   validates :email,

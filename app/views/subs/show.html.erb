@@ -26,9 +26,9 @@
 
 <% content_for :sub_side do %>
   <% if @sub.slug != 'all' %>
-    <h3 align="center">This sub has <%= pluralize(count_subscribers(@sub.id), 'subscriber') %></h3>
+    <h3 align="center">This sub has <%= pluralize(count_subscribers(@sub), 'subscriber') %></h3>
     <% if logged_in? %>
-      <% if is_user_subscribed_to_sub?(@sub.id, current_user.id) %>
+      <% if is_user_subscribed_to_sub?(@sub, current_user) %>
         <h3 align="center">You're subscribed!</h3>
         <%= button_to 'Unsubscribe', {:controller => 'subs', :action => 'unsubscribe', :user_id => current_user.id, :sub_id => @sub.id}, class: ["btn btn-primary btn-block"]  %>
       <% else %>
@@ -42,9 +42,9 @@
     <% end %>
     <br>
     <% if @sub.description %>
-    <pre>
-      <%= @sub.description %>
-    </pre>
+      <pre>
+        <%= @sub.description %>
+      </pre>
     <% end %>
   <% end %>
 <% end %>

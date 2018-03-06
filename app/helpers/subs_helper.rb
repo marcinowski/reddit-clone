@@ -1,13 +1,21 @@
 module SubsHelper
   def all_subs
-    @subs = Sub.pluck(:slug)
+    limit = 20
+    selected_subs = []
+    if current_user
+      selected_subs = current_user.sub_subscriptions.limit(limit).pluck(:sub_id)
+      subs = Sub.find(selected_subs)
+    end
+    other_limit = limit - selected_subs.count
+    subs += Sub.where.not(id: selected_subs).limit(other_limit)
+    return subs.pluck(:slug)
   end
 
   def is_user_subscribed_to_sub? (sub, user)
-    SubSubscription.where(user_id: user, sub_id: sub).exists?
+    sub.sub_subscriptions.where(user: user).exists?
   end
 
   def count_subscribers (sub)
-    SubSubscription.where(sub_id: sub).count
+    sub.sub_subscriptions.count
   end
 end

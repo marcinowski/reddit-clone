@@ -2,6 +2,7 @@ class Sub < ApplicationRecord
   has_many :posts
   has_one :sub_info
   has_many :sub_moderators
+  has_many :sub_subscriptions
   has_many :sub_bans
 
   validates_uniqueness_of :slug
