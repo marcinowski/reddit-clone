@@ -26,23 +26,19 @@ module UserPermissionsHelper
   end
 
   def is_moderator? (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
-    if p.nil?
-      return false
-    end
-    p.is_moderator
+    !sub.sub_moderators.find_by(user: user).nil?
   end
 
   def add_moderator (user, sub)
-    user.sub_permissions.find_or_create_by(subs_id: sub.id).update(is_moderator: true)
+    sub.sub_moderators.find_or_create_by(user: user)
   end
 
   def remove_moderator (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_moderators.find_by(users: user)
     if p.nil?
       return true
     end
-    p.update(is_moderator: false)
+    p.destroy
   end
 
   # bans
@@ -59,7 +55,7 @@ module UserPermissionsHelper
   end
 
   def is_banned_from_sub? (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = user.sub_bans.find_by(sub: sub)
     if p.nil?
       return false
     end
@@ -67,11 +63,11 @@ module UserPermissionsHelper
   end
 
   def ban_from_sub (user, sub)
-    user.sub_permissions.find_or_create_by(subs_id: sub.id).update(is_banned: true)
+    sub.sub_bans.find_or_create_by(user: user).update(is_banned: true)
   end
 
   def unban_from_sub (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_bans.find_by(user: user)
     if p.nil?
       return true
     end
@@ -105,7 +101,7 @@ module UserPermissionsHelper
   end
 
   def can_comment_in_sub? (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_bans.find_by(user: user)
     if p.nil?
       return true
     end
@@ -113,11 +109,11 @@ module UserPermissionsHelper
   end
 
   def ban_comments_in_sub (user, sub)
-    user.sub_permissions.find_or_create_by(subs_id: sub.id).update(cannot_comment: true)
+    user.sub_permissions.find_or_create_by(sub: sub).update(cannot_comment: true)
   end
 
   def unban_comments_in_sub (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_bans.find_by(user: user)
     if p.nil?
       return true
     end
@@ -138,7 +134,7 @@ module UserPermissionsHelper
   end
 
   def can_post_in_sub? (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_bans.find_by(user: user)
     if p.nil?
       return true
     end
@@ -146,14 +142,14 @@ module UserPermissionsHelper
   end
 
   def ban_posts_in_sub (user, sub)
-    user.sub_permissions.find_or_create_by(subs_id: sub.id).update(cannot_post: true)
+    user.sub_permissions.find_or_create_by(sub: sub).update(cannot_post: true)
   end
 
   def unban_posts_in_sub (user, sub)
-    p = user.sub_permissions.find_by(subs_id: sub.id)
+    p = sub.sub_bans.find_by(user: user)
     if p.nil?
       return true
     end
-    user.sub_permissions.find_or_create_by(subs_id: sub.id).update(cannot_post: false)
+    user.sub_permissions.find_or_create_by(sub: sub).update(cannot_post: false)
   end
 end

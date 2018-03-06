@@ -38,6 +38,39 @@ class SubsController < ApplicationController
     @posts = @posts.limit(limit).offset(offset)
   end
 
+  def edit
+    if logged_in?
+      @sub = Sub.find_by(slug: params[:slug])
+      unless @sub.nil?
+        user = current_user
+        if is_moderator? user, @sub
+          render "edit"
+          return
+        end
+      end
+    end
+    redirect_to root_path
+  end
+
+  def update
+    if logged_in?
+      @sub = Sub.find_by(slug: params[:slug])
+      unless @sub.nil?
+        description = params[:sub][:description]
+        if @sub.update(description: description)
+          logger.info("Updating")
+          redirect_to sub_path(slug: @sub.slug)
+          return
+        else
+          render "edit"
+          return
+        end
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
   def destroy
   end
 

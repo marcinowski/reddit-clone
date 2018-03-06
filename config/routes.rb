@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get '/u/new', to: 'users#new', as: :new_user
   post '/u/new', to: 'users#create', as: nil
   resources :users, param: :username, path: :u, only: [:show]
-  resources :subs, param: :slug, path: :r, only: [:show, :new, :create, :destroy] do
+  resources :subs, param: :slug, path: :r, only: [:show, :new, :create, :destroy, :edit, :update] do
     resources :posts, only: [:new]
   end
   post '/subscribe', to: 'subs#subscribe'

@@ -35,6 +35,16 @@
         <h3 align="center">You're not subscribed!</h3>
         <%= button_to 'Subscribe', {:controller => 'subs', :action => 'subscribe', :user_id => current_user.id, :sub_id => @sub.id}, class: ["btn btn-primary btn-block"]  %>
       <% end %>
+      <% if is_moderator? current_user, @sub %>
+        <h3 align="center">Admin tools</h3>
+        <%= link_to "Edit Sub description", edit_sub_path(slug: @sub.slug), class: ["btn btn-warning btn-block"] %>
+      <% end %>
+    <% end %>
+    <br>
+    <% if @sub.description %>
+    <pre>
+      <%= @sub.description %>
+    </pre>
     <% end %>
   <% end %>
 <% end %>

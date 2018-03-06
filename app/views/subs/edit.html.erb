@@ -1,0 +1,22 @@
+<div class="col-md-4 col-md-offset-4">
+  <div>
+    <% if @sub.errors.any? %>
+      <div id="error_explanation">
+        <% @sub.errors.full_messages.each do |msg| %>
+          <div class="alert alert-danger" role="alert"><%= msg %></div>
+        <% end %>
+      </div>
+    <% end %>
+    <h1 class="page-header text-center">Edit sub</h1>
+
+    <%= form_for @sub, url: sub_path(slug: @sub.slug), method: "put" do |s| %>
+      <div class="form-group">
+        <%= s.label :description %>
+        <%= s.text_area :description, class: ["form-control"] %>
+      </div>
+      <div class="form-group">
+        <%= s.submit "Edit", class: ["btn btn-primary pull-right"] %>
+      </div>
+    <% end %>
+  </div>
+</div>
