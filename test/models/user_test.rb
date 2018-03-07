@@ -1,36 +1,32 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  def setup
-    @user = User.create(email: 'test@test.com', password: 'testtest')
-  end
-
   test "should be valid" do
-    assert @user.valid?
+    users(:one).valid?
   end
 
   test "email not empty" do
-    @user.email = "    "
-    assert_not @user.valid?
+    users(:one).email = "    "
+    assert_not users(:one).valid?
   end
 
   test "invalid email" do
-    @user.email = "kek"
-    assert_not @user.valid?
+    users(:one).email = "kek"
+    assert_not users(:one).valid?
   end
 
   test "duplicate email" do
-    @dup = @user.dup
-    @dup.save
-    assert_not @dup.valid?
+    dup = users(:one).dup
+    dup.save
+    assert_not dup.valid?
   end
 
   test "authenticate" do
-    assert !!@user.authenticate('testtest')
+    assert !!users(:one).authenticate('testtest')
   end
 
   test "false authenticate" do
-    assert_not !!@user.authenticate('test')
+    assert_not !!users(:one).authenticate('test')
   end
 
 end

@@ -1,4 +1,4 @@
-require_dependency 'app/lib/searchable_model'
+# require 'app/lib/searchable_model'
 
 class User < ApplicationRecord
   include SearchableModel, SearchHelper

@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user: one
-  sub: one
+  user_id: 1
+  sub_id: 1
 
 two:
-  user: two
-  sub: two
+  user_id: 2
+  sub_id: 2
