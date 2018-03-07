@@ -2,7 +2,7 @@ module SubsHelper
   def all_subs
     limit = 20
     selected_subs = []
-    if current_user
+    unless current_user.nil?
       selected_subs = current_user.sub_subscriptions.limit(limit).pluck(:sub_id)
       subs = Sub.find(selected_subs)
     end

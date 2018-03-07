@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  word: MyString
-  table: MyString
-  ref_id: 1
-
-two:
-  word: MyString
-  table: MyString
-  ref_id: 1
+# one:
+#   word: MyString
+#   table: MyString
+#   ref_id: 1
+#
+# two:
+#   word: MyString
+#   table: MyString
+#   ref_id: 2
