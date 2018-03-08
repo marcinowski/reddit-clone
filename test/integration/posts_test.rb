@@ -4,7 +4,7 @@ class PostsTest < ActionDispatch::IntegrationTest
   test "get add post path" do
     log_in_as(users(:one))
     get new_sub_post_path(sub_slug: subs(:one).slug)
-    assert_response :success
+    assert_response 200
   end
 
   test "post create post authenticated" do
@@ -39,14 +39,31 @@ class PostsTest < ActionDispatch::IntegrationTest
     assert_response 200
   end
 
-  test "post delete post path not authenticated" do
+  test "put update post path not authenticated" do
+    put post_path(posts(:one))
+    assert_redirected_to root_path
+  end
+
+  test "put update post path not owner" do
+    log_in_as(users(:two))
+    put post_path(posts(:one))
+    assert_redirected_to root_path
+  end
+
+  test "put update post path owner" do
+    log_in_as(users(:one))
+    put post_path(posts(:one)), params: {post: {title: 'Test changed'}}
+    assert_redirected_to post_comments_path(posts(:one))
+  end
+
+  test "delete post path not authenticated" do
     assert_no_difference('Post.count') do
       delete post_path(id: posts(:one).id)
     end
     assert_redirected_to root_path
   end
 
-  test "post delete post path not owner" do
+  test "delete post path not owner" do
     log_in_as(users(:two))
     assert_no_difference('Post.count') do
       delete post_path(id: posts(:one).id)
@@ -54,7 +71,7 @@ class PostsTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test "post delete post path owner" do
+  test "delete post path owner" do
     log_in_as(users(:one))
     assert_difference('Post.count', -1) do
       delete post_path(id: posts(:one).id)

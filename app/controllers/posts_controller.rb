@@ -54,16 +54,16 @@ class PostsController < ApplicationController
     if logged_in?
       @post = Post.find_by(id: params[:id], user: current_user)
       if @post.nil?
-        redirect_to posts_path
+        redirect_to root_path
       else
         if @post.update(post_params)
-          redirect_to @post
+          redirect_to post_comments_path(@post)
         else
           render "edit"
         end
       end
     else
-      redirect_to posts_path
+      redirect_to root_path
     end
   end
 

@@ -31,22 +31,27 @@ class CommentsController < ApplicationController
 
   def update
     if logged_in?
-      comment = Comment.find(params[:id])
-      comment.update(content: params[:comment][:content])
-      if comment.save
-        redirect_to post_comments_path(params[:post_id])
+      comment = Comment.find_by(id: params[:id], user_id: current_user.id)
+      if comment.nil?
+        redirect_to post_comments_path(post_id: params[:post_id])
         return
+      else
+        comment.update(content: params[:comment][:content])
+        if comment.save
+          redirect_to post_comments_path(params[:post_id])
+          return
+        end
       end
     else
       redirect_to post_comments_path(params[:post_id])
       return
     end
-    redirect_to posts_path
+    redirect_to root_path
   end
 
   def destroy
+    post = Post.find(params[:post_id])
     if logged_in?
-      post = Post.find(params[:post_id])
       if !post.nil?
         comment = post.comments.find_by(id: params[:id], user_id: current_user.id)
         if !comment.nil?
@@ -56,7 +61,7 @@ class CommentsController < ApplicationController
         end
       end
     end
-    redirect_to posts_path31
+    redirect_to post_comments_path(post)
   end
 
 end
