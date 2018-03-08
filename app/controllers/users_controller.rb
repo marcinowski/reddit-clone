@@ -6,6 +6,10 @@ class UsersController < ApplicationController
   end
 
   def new
+    if logged_in?
+      redirect_to root_url
+      return
+    end
     @user = User.new
   end
 
@@ -16,6 +20,10 @@ class UsersController < ApplicationController
   end
 
   def create
+    if logged_in?
+      redirect_to root_url
+      return
+    end
     @user = User.new(user_params)
     if @user.save
       flash[:success] = "Welcome to Reddit!"
