@@ -3,8 +3,9 @@ class SessionsController < ApplicationController
     if logged_in?
       redirect_to root_url
     end
+    puts params
     @errors = []
-    @ref_path = params[:ref_path]
+    @ref_path = params[:ref_path] || ''
   end
 
   def create

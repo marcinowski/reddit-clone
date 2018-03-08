@@ -1,15 +1,24 @@
 class SubsController < ApplicationController
   layout 'sub', only: ["show"]
   def new
-    @sub = Sub.new
+    if logged_in?
+      @sub = Sub.new
+    else
+      redirect_to controller: 'sessions', action: 'new', ref_path: new_sub_path
+      return
+    end
   end
 
   def create
-    @sub = Sub.new(slug: sub_params)
-    if @sub.save
-      redirect_to sub_path(slug: @sub.slug)
+    if logged_in?
+      @sub = Sub.new(slug: sub_params)
+      if @sub.save
+        redirect_to sub_path(slug: @sub.slug)
+      else
+        render "new"
+      end
     else
-      render "new"
+      redirect_to root_path
     end
   end
 

@@ -11,4 +11,56 @@ class SubsTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
   end
+
+  test "get sub path not authenticated" do
+    get sub_path(slug: subs(:one).slug)
+    assert_response :success
+  end
+
+  test "get sub path authenticated" do
+    log_in_as(users(:one))
+    get sub_path(slug: subs(:one).slug)
+    assert_response :success
+  end
+
+  test "new sub not authenticated" do
+    get new_sub_path
+    assert_response :redirect
+  end
+
+  test "new sub authenticated" do
+    log_in_as(users(:one))
+    get new_sub_path
+    assert_response :success
+  end
+
+  test "create sub not authenticated" do
+    assert_no_difference('Sub.count') do
+      post subs_path, params: {sub: {slug: 'tessst'}}
+    end
+  end
+
+  test "create sub authenticated" do
+    log_in_as(users(:one))
+    assert_difference('Sub.count') do
+      post subs_path, params: {sub: {slug: 'tessst'}}
+    end
+  end
+
+  test "get edit sub path not authenticated" do
+    get edit_sub_path(slug: subs(:one).slug)
+    assert_response :redirect
+  end
+
+  test "get edit sub path not mod" do
+    log_in_as(users(:two))
+    get edit_sub_path(slug: subs(:one).slug)
+    assert_response :redirect
+  end
+
+  test "get edit sub path mod" do
+    log_in_as(users(:one))
+    get edit_sub_path(slug: subs(:one).slug)
+    assert_response :success
+  end
 end
