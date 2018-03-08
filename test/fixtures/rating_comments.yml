@@ -1,16 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
-  comment_id: 1
+  user: one
+  comment: one
   rating: 1
 
 two:
-  user_id: 1
-  comment_id: 2
+  user: one
+  comment: two
   rating: -1
 
 three:
-  user_id: 2
-  comment_id: 2
+  user: two
+  comment: two
   rating: -1

@@ -1,23 +1,20 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 1
-  user_id: 1
-  sub_id: 1
+  user: one
+  sub: one
   url: http://www.localhost.com
   title: MyString
   description: MyText
 
 two:
-  id: 2
-  user_id: 1
-  sub_id: 2
+  user: one
+  sub: two
   url: http://www.localhost.com
   title: MyString
 
 three:
-  id: 3
-  user_id: 2
-  sub_id: 1
+  user: two
+  sub: one
   title: MyString
   description: MyText

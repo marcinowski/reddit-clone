@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  user_id: 1
-  post_id: 3
+  user: one
+  post: three
   rating: 1
 
 two:
-  user_id: 2
-  post_id: 1
+  user: two
+  post: one
   rating: -1
