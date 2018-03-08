@@ -16,10 +16,15 @@ class PostsController < ApplicationController
   end
 
   def create
+    if !logged_in?
+      flash[:danger] = "You must be logged in to add posts."
+      redirect_to root_url
+      return
+    end
     @post = Post.new(user_id: current_user.id, title: post_params[:title],
       url: post_params[:url], description: post_params[:description], sub_id: post_params[:sub_id])
     if @post.save
-      redirect_to post_path(@post)
+      redirect_to post_comments_path(post_id: @post.id)
     else
       render "new"
     end
@@ -38,10 +43,10 @@ class PostsController < ApplicationController
     if logged_in?
       @post = Post.find_by(id: params[:id], user: current_user)
       if @post.nil?
-        redirect_to posts_path
+        redirect_to root_path
       end
     else
-      redirect_to posts_path
+      redirect_to root_path
     end
   end
 
@@ -65,7 +70,7 @@ class PostsController < ApplicationController
   def destroy
     if !logged_in?
       flash[:warning] = "You must be logged in to edit the posts"
-      redirect_to posts_path
+      redirect_to root_path
     else
       post = Post.find_by(id: params[:id], user: current_user)
       if !post.nil?
@@ -73,7 +78,7 @@ class PostsController < ApplicationController
       else
         flash[:danger] = "It's not your post dude"
       end
-      redirect_to posts_path
+      redirect_to root_path
     end
   end
 

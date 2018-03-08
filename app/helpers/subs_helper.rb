@@ -4,8 +4,8 @@ module SubsHelper
     selected_subs = []
     unless current_user.nil?
       selected_subs = current_user.sub_subscriptions.limit(limit).pluck(:sub_id)
-      subs = Sub.find(selected_subs)
     end
+    subs = Sub.find(selected_subs)
     other_limit = limit - selected_subs.count
     subs += Sub.where.not(id: selected_subs).limit(other_limit)
     return subs.pluck(:slug)
