@@ -34,6 +34,12 @@ class SubsTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "new sub banned" do
+    log_in_as(users(:one))
+    get new_sub_path
+    assert_response :success
+  end
+
   test "create sub not authenticated" do
     assert_no_difference('Sub.count') do
       post subs_path, params: {sub: {slug: 'tessst'}}
@@ -43,6 +49,13 @@ class SubsTest < ActionDispatch::IntegrationTest
   test "create sub authenticated" do
     log_in_as(users(:one))
     assert_difference('Sub.count') do
+      post subs_path, params: {sub: {slug: 'tessst'}}
+    end
+  end
+
+  test "create sub banned" do
+    log_in_as(users(:ban))
+    assert_no_difference('Sub.count') do
       post subs_path, params: {sub: {slug: 'tessst'}}
     end
   end

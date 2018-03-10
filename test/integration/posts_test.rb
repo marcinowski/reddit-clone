@@ -1,10 +1,27 @@
 require 'test_helper'
 
 class PostsTest < ActionDispatch::IntegrationTest
-  test "get add post path" do
+  test "get add post path authenticated" do
     log_in_as(users(:one))
     get new_sub_post_path(sub_slug: subs(:one).slug)
-    assert_response 200
+    assert_response :success
+  end
+
+  test "get add post path not authenticated" do
+    get new_sub_post_path(sub_slug: subs(:one).slug)
+    assert_response :redirect
+  end
+
+  test "get add post path banned" do
+    log_in_as(users(:ban))
+    get new_sub_post_path(sub_slug: subs(:one).slug)
+    assert_response :redirect
+  end
+
+  test "get add post path banned on sub" do
+    log_in_as(users(:ban_sub))
+    get new_sub_post_path(sub_slug: subs(:one).slug)
+    assert_response :redirect
   end
 
   test "post create post authenticated" do
@@ -20,6 +37,20 @@ class PostsTest < ActionDispatch::IntegrationTest
       post posts_path, params: {post: {sub_id: subs(:one).id, title: 'Test', description: 'test'}}
     end
     assert_redirected_to root_path
+  end
+
+  test "post create post banned" do
+    log_in_as(users(:ban))
+    assert_no_difference('Post.count') do
+      post posts_path, params: {post: {sub_id: subs(:one).id, title: 'Test', description: 'test'}}
+    end
+  end
+
+  test "post create post banned on sub" do
+    log_in_as(users(:ban_sub))
+    assert_no_difference('Post.count') do
+      post posts_path, params: {post: {sub_id: subs(:one).id, title: 'Test', description: 'test'}}
+    end
   end
 
   test "post edit post path not authenticated" do

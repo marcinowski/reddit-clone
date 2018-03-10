@@ -21,4 +21,9 @@ class AuthTest < ActionDispatch::IntegrationTest
     post login_path, params: {session: {email: users(:one).email, password: 'testtest'}}
     assert_response :redirect
   end
+
+  test "logging in banned" do
+    post login_path, params: {session: {email: users(:ban_login).email, password: 'testtest'}}
+    assert_redirected_to root_url
+  end
 end

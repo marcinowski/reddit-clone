@@ -9,3 +9,18 @@ two:
   username: testtwo
   email: testtwo@test.com
   password_digest: <%= BCrypt::Password.create('testtest') %>
+
+ban_login:
+  username: ban_login
+  email: ban_login@test.com
+  password_digest: <%= BCrypt::Password.create('testtest') %>
+
+ban:
+  username: ban
+  email: ban@test.com
+  password_digest: <%= BCrypt::Password.create('testtest') %>
+
+ban_sub:
+  username: ban_sub
+  email: ban_sub@test.com
+  password_digest: <%= BCrypt::Password.create('testtest') %>

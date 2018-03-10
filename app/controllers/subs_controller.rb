@@ -2,15 +2,20 @@ class SubsController < ApplicationController
   layout 'sub', only: ["show"]
   def new
     if logged_in?
-      @sub = Sub.new
-    else
-      redirect_to controller: 'sessions', action: 'new', ref_path: new_sub_path
-      return
+      if can_add_subs?(current_user)
+        @sub = Sub.new
+        render "new"
+        return
+      else
+        flash[:danger] = 'You can\'t create new subs.'
+      end
     end
+    redirect_to controller: 'sessions', action: 'new', ref_path: new_sub_path
+    return
   end
 
   def create
-    if logged_in?
+    if logged_in? and can_add_subs?(current_user)
       @sub = Sub.new(slug: sub_params)
       if @sub.save
         redirect_to sub_path(slug: @sub.slug)
@@ -51,8 +56,7 @@ class SubsController < ApplicationController
     if logged_in?
       @sub = Sub.find_by(slug: params[:slug])
       unless @sub.nil?
-        user = current_user
-        if is_moderator? user, @sub
+        if is_moderator?(current_user, @sub)
           render "edit"
           return
         end
@@ -65,6 +69,10 @@ class SubsController < ApplicationController
     if logged_in?
       @sub = Sub.find_by(slug: params[:slug])
       unless @sub.nil?
+        unless is_moderator?(current_user, @sub)
+          redirect_to root_path
+          return
+        end
         description = params[:sub][:description]
         if @sub.update(description: description)
           logger.info("Updating")

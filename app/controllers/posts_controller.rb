@@ -5,13 +5,18 @@ class PostsController < ApplicationController
     if !logged_in?
       flash[:danger] = "You must be logged in to add posts."
       redirect_to root_url
+      return
+    end
+    sub = Sub.find_by(slug: params[:sub_slug])
+    unless can_post?(current_user, sub)
+      flash[:danger] = "You can't add posts."
+      redirect_to root_url
+      return
+    end
+    if sub.nil?
+      @post = Post.new
     else
-      sub = Sub.find_by(slug: params[:sub_slug])
-      if sub.nil?
-        @post = Post.new
-      else
-        @post = Post.new(sub_id: sub.id)
-      end
+      @post = Post.new(sub_id: sub.id)
     end
   end
 
@@ -21,8 +26,13 @@ class PostsController < ApplicationController
       redirect_to root_url
       return
     end
+    sub = Sub.find(post_params[:sub_id])
+    unless can_post?(current_user, sub)
+      redirect_to root_url
+      return
+    end
     @post = Post.new(user_id: current_user.id, title: post_params[:title],
-      url: post_params[:url], description: post_params[:description], sub_id: post_params[:sub_id])
+      url: post_params[:url], description: post_params[:description], sub: sub)
     if @post.save
       redirect_to post_comments_path(post_id: @post.id)
     else

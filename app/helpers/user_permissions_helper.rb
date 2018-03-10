@@ -88,8 +88,11 @@ module UserPermissionsHelper
   end
 
   # ban comments
-  def can_comment? user
-    user.user_permission.can_comment
+  def can_comment? user, sub
+    unless user.user_permission.can_comment
+      return false
+    end
+    return can_comment_in_sub?(user, sub)
   end
 
   def ban_comments user
@@ -121,8 +124,11 @@ module UserPermissionsHelper
   end
 
   # ban posts
-  def can_post? user
-    user.user_permission.can_post
+  def can_post? user, sub
+    unless user.user_permission.can_post
+      return false
+    end
+    return can_post_in_sub?(user, sub)
   end
 
   def ban_posts user

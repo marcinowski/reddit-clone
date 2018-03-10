@@ -25,6 +25,20 @@ class CommentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "post comment create banned" do
+    log_in_as(users(:ban))
+    assert_no_difference('Comment.count') do
+      post post_comments_path(post_id: posts(:one).id), params: {comment: {content: 'test'}}
+    end
+  end
+
+  test "post comment create banned on sub" do
+    log_in_as(users(:ban_sub))
+    assert_no_difference('Comment.count') do
+      post post_comments_path(post_id: posts(:one).id), params: {comment: {content: 'test'}}
+    end
+  end
+
   test "put update comment not authenticated" do
     put post_comment_path(post_id: posts(:one).id, id: comments(:one).id)
     assert_redirected_to post_comments_path(posts(:one))

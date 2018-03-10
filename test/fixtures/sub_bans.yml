@@ -1,3 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one: {}
+one:
+  user: ban_sub
+  sub: one
+  is_banned: false
+  cannot_comment: true
+  cannot_post: true
