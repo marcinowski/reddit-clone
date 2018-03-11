@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :subs, param: :slug, path: :r, only: [:show, :new, :create, :destroy, :edit, :update] do
     resources :posts, only: [:new]
   end
+  get '/r/:slug/mod', to: 'subs#mod', as: :mod_sub
   post '/subscribe', to: 'subs#subscribe'
   post '/unsubscribe', to: 'subs#unsubscribe'
   resources :posts, only: [:index, :new, :create, :show, :edit, :update, :destroy] do

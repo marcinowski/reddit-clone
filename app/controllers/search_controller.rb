@@ -3,22 +3,49 @@ class SearchController < ApplicationController
   end
 
   def results
-    @queryString = params[:q]
-    if @queryString.nil?
+    query = params[:q]
+    if (query.nil?) || (query == '')
       redirect_to '/search'
       return
     end
-    @queryString.downcase!
-    results = SearchTable.order(:table).where(word: @queryString)
-    objects = {}
-    results.each do |o|
-      if objects[o.table].nil?
-        objects[o.table] = []
-      end
-      objects[o.table].push(o.ref_id)
+    query.downcase!
+    @posts = search_posts(query)
+    @subs = search_subs(query)
+    @queryString = query
+  end
+
+  def results_users
+    query = params[:q]
+    if (query.nil?) || (query == '')
+      redirect_to '/search'
+      return
     end
-    @posts = Post.where(id: objects['posts'])
-    @comments = Comment.where(id: objects['comments'])
-    @users = User.where(id: objects['users'])
+    query.downcase!
+    users = search_users(query)
+    render :json => users
+  end
+
+  private
+  def search_users query
+    results = SearchTable.order(:table).where(word: query, table: 'users').pluck(:ref_id)
+    return User.where(id: results)
+  end
+
+  private
+  def search_posts query
+    results = SearchTable.order(:table).where(word: query, table: 'posts').pluck(:ref_id)
+    return Post.where(id: results)
+  end
+
+  private
+  def search_comments query
+    results = SearchTable.order(:table).where(word: query, table: 'comments').pluck(:ref_id)
+    return Comment.where(id: results)
+  end
+
+  private
+  def search_subs query
+    results = SearchTable.order(:table).where(word: query, table: 'subs').pluck(:ref_id)
+    return Sub.where(id: results)
   end
 end

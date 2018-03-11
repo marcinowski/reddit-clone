@@ -8,14 +8,14 @@ class PostsController < ApplicationController
       return
     end
     sub = Sub.find_by(slug: params[:sub_slug])
-    unless can_post?(current_user, sub)
-      flash[:danger] = "You can't add posts."
-      redirect_to root_url
-      return
-    end
     if sub.nil?
       @post = Post.new
     else
+      unless can_post?(current_user, sub)
+        flash[:danger] = "You can't add posts."
+        redirect_to root_url
+        return
+      end
       @post = Post.new(sub_id: sub.id)
     end
   end

@@ -11,7 +11,7 @@ class Comment < ApplicationRecord
   after_update :update_model_for_search
 
   before_destroy :destroy_model_from_search
-
+  
   private
     def save_model_for_search
       save_for_search(self.content, self.class.table_name, self.id)

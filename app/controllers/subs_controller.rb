@@ -1,5 +1,5 @@
 class SubsController < ApplicationController
-  layout 'sub', only: ["show"]
+  layout 'sub', only: ["show", "mod"]
   def new
     if logged_in?
       if can_add_subs?(current_user)
@@ -16,9 +16,10 @@ class SubsController < ApplicationController
 
   def create
     if logged_in? and can_add_subs?(current_user)
-      @sub = Sub.new(slug: sub_params)
-      if @sub.save
-        redirect_to sub_path(slug: @sub.slug)
+      sub = Sub.new(slug: sub_params)
+      SubModerator.create(sub: sub, user: current_user)
+      if sub.save
+        redirect_to sub_path(slug: sub.slug)
       else
         render "new"
       end
@@ -49,6 +50,7 @@ class SubsController < ApplicationController
     if page > 0
       @prev_page = page - 1
     end
+    @mods = User.find(@sub.sub_moderators.pluck(:user_id))
     @posts = @posts.limit(limit).offset(offset)
   end
 
@@ -101,6 +103,17 @@ class SubsController < ApplicationController
     user_id = params[:user_id]
     sub_id = params[:sub_id]
     SubSubscription.find_by(user_id: user_id, sub_id: sub_id).delete
+  end
+
+  def mod
+    unless logged_in?
+      redirect_to root_path
+    end
+    sub_slug = params[:slug]
+    @sub = Sub.find_by(slug: sub_slug)
+    unless is_moderator?(current_user, @sub)
+      redirect_to sub_path(slug: @sub.slug)
+    end
   end
 
   private

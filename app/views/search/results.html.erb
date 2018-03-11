@@ -1,16 +1,12 @@
 <%= render 'search/search' %>
 <div class="col-md-6 col-md-offset-3">
   <h2 class="page-header">Search results for '<%= @queryString %>'</h2>
+  <h3 class="page-header">Subs</h3>
+  <% @subs.each do |s| %>
+    <%= render 'shared/sub_card', {sub: s} %>
+  <% end %>
   <h3 class="page-header">Posts</h3>
   <% @posts.each do |p| %>
     <%= render 'shared/post_card', {post: p}%>
-  <% end %>
-  <h3 class="page-header">Comments</h3>
-  <% @comments.each do |c| %>
-    <%= render 'shared/comment_card', {comment: c} %>
-  <% end %>
-  <h3 class="page-header">Users</h3>
-  <% @users.each do |u| %>
-    <%= render 'shared/user_card', {user: u} %>
   <% end %>
 </div>
