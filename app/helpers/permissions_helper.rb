@@ -1,5 +1,5 @@
 module PermissionsHelper
-    actions = {
+    permission_actions = {
         # site wide important
         11 => 'add_superuser',
         12 => 'remove_superuser',
