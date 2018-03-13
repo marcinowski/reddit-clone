@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
       post = Post.find(params[:post_id])
       if !post.nil?
         sub = post.sub
-        unless can_comment?(current_user, sub)
+        unless UserPermissions.can_comment?(current_user, sub)
           flash[:danger] = "You can't add comments in this sub."
           redirect_to post_comments_path(post)
           return

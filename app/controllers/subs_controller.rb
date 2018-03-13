@@ -2,7 +2,7 @@ class SubsController < ApplicationController
   layout 'sub', only: ["show", "mod"]
   def new
     if logged_in?
-      if can_add_subs?(current_user)
+      if UserPermissions.can_add_subs?(current_user)
         @sub = Sub.new
         render "new"
         return
@@ -15,7 +15,7 @@ class SubsController < ApplicationController
   end
 
   def create
-    if logged_in? and can_add_subs?(current_user)
+    if logged_in? and UserPermissions.can_add_subs?(current_user)
       sub = Sub.new(slug: sub_params)
       SubModerator.create(sub: sub, user: current_user)
       if sub.save
@@ -58,7 +58,7 @@ class SubsController < ApplicationController
     if logged_in?
       @sub = Sub.find_by(slug: params[:slug])
       unless @sub.nil?
-        if is_moderator?(current_user, @sub)
+        if UserPermissions.is_moderator?(current_user, @sub)
           render "edit"
           return
         end
@@ -71,7 +71,7 @@ class SubsController < ApplicationController
     if logged_in?
       @sub = Sub.find_by(slug: params[:slug])
       unless @sub.nil?
-        unless is_moderator?(current_user, @sub)
+        unless UserPermissions.is_moderator?(current_user, @sub)
           redirect_to root_path
           return
         end
@@ -111,7 +111,7 @@ class SubsController < ApplicationController
     end
     sub_slug = params[:slug]
     @sub = Sub.find_by(slug: sub_slug)
-    unless is_moderator?(current_user, @sub)
+    unless UserPermissions.is_moderator?(current_user, @sub)
       redirect_to sub_path(slug: @sub.slug)
     end
   end

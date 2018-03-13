@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/r/:slug/mod', to: 'subs#mod', as: :mod_sub
   post '/subscribe', to: 'subs#subscribe'
   post '/unsubscribe', to: 'subs#unsubscribe'
+  post '/mod', to: 'permissions#action'
   resources :posts, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     resources :comments, only: [:index, :new, :create, :edit, :update, :destroy]
   end

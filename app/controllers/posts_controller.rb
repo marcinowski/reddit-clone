@@ -11,7 +11,7 @@ class PostsController < ApplicationController
     if sub.nil?
       @post = Post.new
     else
-      unless can_post?(current_user, sub)
+      unless UserPermissions.can_post?(current_user, sub)
         flash[:danger] = "You can't add posts."
         redirect_to root_url
         return
@@ -27,7 +27,7 @@ class PostsController < ApplicationController
       return
     end
     sub = Sub.find(post_params[:sub_id])
-    unless can_post?(current_user, sub)
+    unless UserPermissions.can_post?(current_user, sub)
       redirect_to root_url
       return
     end
