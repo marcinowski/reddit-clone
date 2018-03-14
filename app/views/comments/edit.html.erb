@@ -1,6 +1,6 @@
 <% if logged_in? %>
   <h3>Edit comment</h3>
-  <%= form_with(model: [ @post, @comment ]) do |c| %>
+  <%= form_with(model: [ @comment.post, @comment ]) do |c| %>
     <p>
       <%= c.label :content %><br>
       <%= c.text_area :content %>

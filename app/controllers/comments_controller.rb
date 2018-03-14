@@ -1,13 +1,13 @@
 class CommentsController < ApplicationController
   layout 'sub'
   def index
-    @post = Post.find(params[:post_id])
+    @post = Post.includes(:sub, :rating_posts, comments: [:rating_comments]).find(params[:post_id])
     @sub = @post.sub
   end
 
   def create
     if logged_in?
-      post = Post.find(params[:post_id])
+      post = Post.includes(:sub).find(params[:post_id])
       if !post.nil?
         sub = post.sub
         unless UserPermissions.can_comment?(current_user, sub)
@@ -29,9 +29,7 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    @post = Post.find(params[:post_id])
-    @sub = @post.sub
-    @comment = Comment.find(params[:id])
+    @comment = Comment.include(:post).find(params[:id])
   end
 
   def update
@@ -55,7 +53,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    post = Post.find(params[:post_id])
+    post = Post.includes(:comments).find(params[:post_id])
     if logged_in?
       if !post.nil?
         comment = post.comments.find_by(id: params[:id], user_id: current_user.id)
