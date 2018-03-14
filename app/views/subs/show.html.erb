@@ -38,7 +38,7 @@
       <h3 align="center">Moderators</h3>
       <ul>
         <% @mods.each do |m| %>
-          - <%= link_to m.username, user_path(username: m.username) %>
+          - <%= link_to m.user.username, user_path(username: m.user.username) %>
         <% end %>
       </ul>
       <% if UserPermissions.is_moderator? current_user, @sub %>
