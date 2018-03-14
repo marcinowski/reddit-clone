@@ -37,7 +37,7 @@ class SubsController < ApplicationController
       @posts = @sub.posts
     end
     # pagination
-    limit = 2
+    limit = 10
     page = 0
     pcount = @posts.count
     unless params[:page].nil?

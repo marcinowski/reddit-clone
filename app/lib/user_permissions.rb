@@ -173,7 +173,7 @@ class UserPermissions
       if p.nil?
         return true
       end
-      p.update(cannot_comment: true)
+      p.update(cannot_comment: false)
     end
 
     # ban posts
