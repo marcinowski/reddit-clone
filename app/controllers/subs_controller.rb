@@ -110,7 +110,7 @@ class SubsController < ApplicationController
       redirect_to root_path
     end
     sub_slug = params[:slug]
-    @sub = Sub.find_by(slug: sub_slug)
+    @sub = Sub.includes(sub_bans: [:user]).find_by(slug: sub_slug)
     unless UserPermissions.is_moderator?(current_user, @sub)
       redirect_to sub_path(slug: @sub.slug)
     end

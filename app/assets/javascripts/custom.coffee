@@ -34,30 +34,6 @@
 $ ->
   $(".rating-downvote").click (e) ->
     countVote(this, -1, '.rating-upvote')
-    # model = $(this).data("model")
-    # id = $(this).data("id")
-    # sibling = $(this).siblings('.rating-upvote')
-    # score = $(this).siblings('.rating-score')
-    # s = parseInt(score.text())
-    # if sibling.hasClass('rating-highlight')
-    #   score.text(s-2)
-    # else if $(this).hasClass('rating-highlight')
-    #   score.text(s+1)
-    # else  # unvoted
-    #   score.text(s-1)
-    # vote(model, id, -1, this, sibling)
 
   $(".rating-upvote").click (e) ->
     countVote(this, 1, '.rating-downvote')
-    # model = $(this).data("model")
-    # id = $(this).data("id")
-    # sibling = $(this).siblings('.rating-downvote')
-    # score = $(this).siblings('.rating-score')
-    # s = parseInt(score.text())
-    # if sibling.hasClass('rating-highlight')
-    #   score.text(s+2)
-    # else if $(this).hasClass('rating-highlight')
-    #   score.text(s-1)
-    # else  # unvoted
-    #   score.text(s+1)
-    # vote(model, id, 1, this, sibling)

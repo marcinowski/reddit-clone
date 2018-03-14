@@ -6,15 +6,15 @@ class UserPermissions
       user.user_permission.can_login
     end
 
-    def ban_login user
-      unless is_superuser?(current_user)
+    def ban_login user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_login: false)
     end
 
-    def unban_login user
-      unless is_superuser?(current_user)
+    def unban_login user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_login: true)
@@ -25,15 +25,15 @@ class UserPermissions
       user.user_permission.is_superuser
     end
 
-    def add_superuser user
-      unless is_superuser?(current_user)
+    def add_superuser user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(is_superuser: true)
     end
 
-    def remove_superuser user
-      unless is_superuser?(current_user)
+    def remove_superuser user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(is_superuser: false)
@@ -46,15 +46,15 @@ class UserPermissions
       !sub.sub_moderators.find_by(user: user).nil?
     end
 
-    def add_moderator (user, sub)
-      unless is_moderator?(current_user)
+    def add_moderator (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       sub.sub_moderators.find_or_create_by(user: user)
     end
 
-    def remove_moderator (user, sub)
-      unless is_moderator?(current_user)
+    def remove_moderator (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       p = sub.sub_moderators.find_by(users: user)
@@ -69,15 +69,15 @@ class UserPermissions
       user.user_permission.is_banned
     end
 
-    def ban_user user
-      unless is_superuser?(current_user)
+    def ban_user user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(is_banned: true)
     end
 
-    def unban_user user
-      unless is_superuser?(current_user)
+    def unban_user user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(is_banned: false)
@@ -91,15 +91,15 @@ class UserPermissions
       p.is_banned
     end
 
-    def ban_from_sub (user, sub)
-      unless is_moderator?(current_user)
+    def ban_from_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       sub.sub_bans.find_or_create_by(user: user).update(is_banned: true)
     end
 
-    def unban_from_sub (user, sub)
-      unless is_moderator?(current_user)
+    def unban_from_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       p = sub.sub_bans.find_by(user: user)
@@ -114,15 +114,15 @@ class UserPermissions
       user.user_permission.can_sub
     end
 
-    def ban_add_subs user
-      unless is_moderator?(current_user)
+    def ban_add_subs user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_sub: false)
     end
 
-    def unban_add_subs user
-      unless is_moderator?(current_user)
+    def unban_add_subs user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_sub: true)
@@ -136,15 +136,15 @@ class UserPermissions
       return can_comment_in_sub?(user, sub)
     end
 
-    def ban_comments user
-      unless is_superuser?(current_user)
+    def ban_comments user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_comment: false)
     end
 
-    def unban_comments user
-      unless is_superuser?(current_user)
+    def unban_comments user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_comment: true)
@@ -158,15 +158,15 @@ class UserPermissions
       !p.cannot_comment
     end
 
-    def ban_comments_in_sub (user, sub)
-      unless is_moderator?(current_user)
+    def ban_comments_in_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
-      user.sub_permissions.find_or_create_by(sub: sub).update(cannot_comment: true)
+      user.sub_bans.find_or_create_by(sub: sub).update(cannot_comment: true)
     end
 
-    def unban_comments_in_sub (user, sub)
-      unless is_moderator?(current_user)
+    def unban_comments_in_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       p = sub.sub_bans.find_by(user: user)
@@ -184,15 +184,15 @@ class UserPermissions
       return can_post_in_sub?(user, sub)
     end
 
-    def ban_posts user
-      unless is_superuser?(current_user)
+    def ban_posts user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_post: false)
     end
 
-    def unban_posts user
-      unless is_superuser?(current_user)
+    def unban_posts user, admin
+      unless is_superuser?(admin)
           return false
       end
       user.user_permission.update(can_post: true)
@@ -206,22 +206,22 @@ class UserPermissions
       !p.cannot_post
     end
 
-    def ban_posts_in_sub (user, sub)
-      unless is_moderator?(current_user)
+    def ban_posts_in_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
-      user.sub_permissions.find_or_create_by(sub: sub).update(cannot_post: true)
+      user.sub_bans.find_or_create_by(sub: sub).update(cannot_post: true)
     end
 
-    def unban_posts_in_sub (user, sub)
-      unless is_moderator?(current_user)
+    def unban_posts_in_sub (user, sub, admin)
+      unless is_moderator?(admin, sub)
           return false
       end
       p = sub.sub_bans.find_by(user: user)
       if p.nil?
         return true
       end
-      user.sub_permissions.find_or_create_by(sub: sub).update(cannot_post: false)
+      user.sub_bans.find_or_create_by(sub: sub).update(cannot_post: false)
     end
   end
 end

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  post 'ratings/', to: 'ratings#vote'
+  post '/ratings', to: 'ratings#vote'
   get '/search', to: 'search#index'
   get '/search/results', to: 'search#results'
+  get '/search/results_users', to: 'search#results_users'
   get '/search', to: 'search#index'
   get '/signup', to: 'users#new'
   get '/login', to: 'sessions#new'
@@ -16,7 +17,10 @@ Rails.application.routes.draw do
   get '/r/:slug/mod', to: 'subs#mod', as: :mod_sub
   post '/subscribe', to: 'subs#subscribe'
   post '/unsubscribe', to: 'subs#unsubscribe'
-  post '/mod', to: 'permissions#action'
+  get '/admin', to: 'admin#index'
+  get '/admin/users', to: 'admin#users'
+  post '/admin/action', to: 'admin#action'
+  post '/admin/mod_action', to: 'admin#mod_action'
   resources :posts, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     resources :comments, only: [:index, :new, :create, :edit, :update, :destroy]
   end

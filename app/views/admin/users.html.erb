@@ -1,0 +1,112 @@
+<div>
+  <h1>Retarded stats</h1>
+  <ul>
+    <li>
+      Posts: <%= @post_count %>
+    </li>
+    <li>
+      Users: <%= @user_count %>
+    </li>
+    <li>
+      Comments: <%= @comment_count %>
+    </li>
+    <li>
+      Subs: <%= @sub_count %>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <h2>User</h2>
+  <%= render 'shared/user_card', {user: @user} %>
+  <h2>User permissions</h2>
+  <ul>
+    <li>
+      Is superuser: <%= @user.user_permission.is_superuser %>
+      <% if @user.user_permission.is_superuser %>
+        <%= button_to 'Remove', admin_action_path, params: {user: @user.id, act: 'remove_superuser'} %>
+      <% else %>
+        <%= button_to 'Add', admin_action_path, params: {user: @user.id, act: 'add_superuser'} %>
+      <% end %>
+    </li>
+    <li>
+      Is banned: <%= @user.user_permission.is_banned %>
+      <% if @user.user_permission.is_banned %>
+        <%= button_to 'Unban', admin_action_path, params: {user: @user.id, act: 'unban_user'} %>
+      <% else %>
+        <%= button_to 'Ban', admin_action_path, params: {user: @user.id, act: 'ban_user'} %>
+      <% end %>
+    </li>
+    <li>
+      Can login: <%= @user.user_permission.can_login %>
+      <% if @user.user_permission.can_login %>
+        <%= button_to 'Ban', admin_action_path, params: {user: @user.id, act: 'ban_login'} %>
+      <% else %>
+        <%= button_to 'Unban', admin_action_path, params: {user: @user.id, act: 'unban_login'} %>
+        <% end %>
+    </li>
+    <li>
+      Can comment: <%= @user.user_permission.can_comment %>
+      <% if @user.user_permission.can_comment %>
+        <%= button_to 'Ban', admin_action_path, params: {user: @user.id, act: 'ban_comments'} %>
+      <% else %>
+        <%= button_to 'Unban', admin_action_path, params: {user: @user.id, act: 'unban_comments'} %>
+      <% end %>
+    </li>
+    <li>
+      Can post: <%= @user.user_permission.can_post %>
+      <% if @user.user_permission.can_post %>
+        <%= button_to 'Ban', admin_action_path, params: {user: @user.id, act: 'ban_posts'} %>
+      <% else %>
+        <%= button_to 'Unban', admin_action_path, params: {user: @user.id, act: 'unban_posts'} %>
+      <% end %>
+    </li>
+    <li>
+      Can add subs: <%= @user.user_permission.can_sub %>
+      <% if @user.user_permission.can_sub %>
+        <%= button_to 'Ban', admin_action_path, params: {user: @user.id, act: 'ban_add_subs'} %>
+      <% else %>
+        <%= button_to 'Unban', admin_action_path, params: {user: @user.id, act: 'unban_add_subs'} %>
+      <% end %>
+    </li>
+  </ul>
+  <h2>Moderated subs</h2>
+  <% @user.sub_moderators.each do |mod| %>
+    <ul>
+      <li>
+        Sub <%= link_to sub_path(slug: mod.sub.slug) %>
+        <%= button_to 'Remove', admin_mod_action_path, params: {user: @user.id, act: 'remove_moderator'} %>
+      </li>
+    </ul>
+  <% end %>
+  <h2>User bans</h2>
+  <% @user.sub_bans.each do |ban| %>
+    Sub <%= link_to sub_path(slug: ban.sub.slug) %>
+    <ul>
+      <li>
+        Is banned: <%= ban.is_banned %>
+        <% if ban.is_banned %>
+          <%= button_to 'Unban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'unban_from_sub'} %>
+        <% else %>
+          <%= button_to 'Ban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'ban_from_sub'} %>
+        <% end %>
+      </li>
+      <li>
+        Cannot comment: <%= ban.cannot_comment %>
+        <% if ban.cannot_comment %>
+          <%= button_to 'Unban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'unban_comments_in_sub'} %>
+        <% else %>
+          <%= button_to 'Ban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'ban_comments_in_sub'} %>
+        <% end %>
+      </li>
+      <li>
+        Cannot post: <%= ban.cannot_post %>
+        <% if ban.cannot_post %>
+          <%= button_to 'Unban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'unban_posts_in_sub'} %>
+        <% else %>
+          <%= button_to 'Ban', admin_mod_action_path, params: {user: @user.id, sub: ban.sub.id, act: 'ban_posts_in_sub'} %>
+        <% end %>
+      </li>
+    </ul>
+  <% end %>
+</div>

@@ -1,0 +1,30 @@
+<div>
+  <h1>Retarded stats</h1>
+  <ul>
+    <li>
+      Posts: <%= @post_count %>
+    </li>
+    <li>
+      Users: <%= @user_count %>
+    </li>
+    <li>
+      Comments: <%= @comment_count %>
+    </li>
+    <li>
+      Subs: <%= @sub_count %>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <%= form_tag(admin_users_path, method: "get") do %>
+    <div class="form-group">
+      <%= text_field_tag :username, "", placeholder: "Username", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <div class="center-block">
+        <%= submit_tag "Go", class: ["btn btn-primary center-block"] %>
+      </div>
+    </div>
+  <% end %>
+</div>
