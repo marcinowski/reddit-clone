@@ -11,13 +11,13 @@ class SessionsController < ApplicationController
     user = User.find_by(email: session_params[:email])
     @errors = []
     unless user.nil?
-      unless UserPermissions.can_login?(user)
-        flash[:danger] = 'You have been banned from the site.'
-        logger.warn "Banned user ${email}: attempt to login." % {email: user.email}
-        redirect_to root_url
-        return
-      end
       if user.authenticate(session_params[:password])
+        unless UserPermissions.can_login?(user)
+          flash[:danger] = 'You have been banned from the site.'
+          logger.warn "Banned user ${email}: attempt to login." % {email: user.email}
+          redirect_to root_url
+          return
+        end
         log_in user
         if params[:ref_path]
           redirect_to params[:ref_path]
