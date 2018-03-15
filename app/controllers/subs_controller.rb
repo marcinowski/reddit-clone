@@ -1,30 +1,36 @@
 class SubsController < ApplicationController
   layout 'sub', only: ["show", "mod"]
   def new
-    if logged_in?
-      if UserPermissions.can_add_subs?(current_user)
-        @sub = Sub.new
-        render "new"
-        return
-      else
-        flash[:danger] = 'You can\'t create new subs.'
-      end
+    unless logged_in?
+      return head(:unauthorized)
     end
-    redirect_to controller: 'sessions', action: 'new', ref_path: new_sub_path
-    return
+    if UserPermissions.can_add_subs?(current_user)
+      @sub = Sub.new
+      return render "new"
+    else
+      flash[:danger] = 'You can\'t create new subs.'
+      return head(:forbidden)
+    end
   end
 
   def create
-    if logged_in? and UserPermissions.can_add_subs?(current_user)
-      sub = Sub.new(slug: sub_params)
-      SubModerator.create(sub: sub, user: current_user)
-      if sub.save
-        redirect_to sub_path(slug: sub.slug)
-      else
-        render "new"
+    unless logged_in?
+      return head(:unauthorized)
+    end
+    unless UserPermissions.can_add_subs?(current_user)
+      return head(:forbidden)
+    end
+    sub = Sub.new(slug: sub_params)
+    if sub.save
+      begin
+        SubModerator.create(sub: sub, user: current_user)
+      rescue Exception => e
+        logger.error "subs/create Failed to create sub moderator for sub #{sub.id}. Reason: #{e.message}"
       end
+      return redirect_to sub_path(slug: sub.slug)
     else
-      redirect_to root_path
+      @sub = sub
+      return render "new"
     end
   end
 
@@ -55,38 +61,41 @@ class SubsController < ApplicationController
   end
 
   def edit
-    if logged_in?
-      @sub = Sub.find_by(slug: params[:slug])
-      unless @sub.nil?
-        if UserPermissions.is_moderator?(current_user, @sub)
-          render "edit"
-          return
-        end
-      end
+    unless logged_in?
+      return head(:forbidden)
     end
-    redirect_to root_path
+    sub = Sub.find_by(slug: params[:slug])
+    if sub.nil?
+      logger.warn "subs/edit sub #{params[:slug]} not found"
+      return head(:not_found)
+    end
+    if UserPermissions.is_moderator?(current_user, sub)
+      @sub = sub
+      return render "edit"
+    else
+      return head(:forbidden)
+    end
   end
 
   def update
-    if logged_in?
-      @sub = Sub.find_by(slug: params[:slug])
-      unless @sub.nil?
-        unless UserPermissions.is_moderator?(current_user, @sub)
-          redirect_to root_path
-          return
-        end
-        description = params[:sub][:description]
-        if @sub.update(description: description)
-          logger.info("Updating")
-          redirect_to sub_path(slug: @sub.slug)
-          return
-        else
-          render "edit"
-          return
-        end
-      end
+    unless logged_in?
+      return head(:unauthorized)
+    end
+    sub = Sub.find_by(slug: params[:slug])
+    if sub.nil?
+      logger.warn "subs/update sub #{params[:slug]} not found"
+      return head(:not_found)
+    end
+    unless UserPermissions.is_moderator?(current_user, sub)
+      return head(:forbidden)
+    end
+    description = params[:sub][:description]
+    if sub.update(description: description)
+      logger.info("Updating #{sub.slug}'s description")
+      return redirect_to sub_path(slug: sub.slug)
     else
-      redirect_to root_path
+      @sub = sub
+      return render "edit"
     end
   end
 

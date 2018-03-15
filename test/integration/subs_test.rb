@@ -25,7 +25,7 @@ class SubsTest < ActionDispatch::IntegrationTest
 
   test "new sub not authenticated" do
     get new_sub_path
-    assert_response :redirect
+    assert_response :unauthorized
   end
 
   test "new sub authenticated" do
@@ -62,13 +62,13 @@ class SubsTest < ActionDispatch::IntegrationTest
 
   test "get edit sub path not authenticated" do
     get edit_sub_path(slug: subs(:one).slug)
-    assert_response :redirect
+    assert_response :forbidden
   end
 
   test "get edit sub path not mod" do
     log_in_as(users(:two))
     get edit_sub_path(slug: subs(:one).slug)
-    assert_response :redirect
+    assert_response :forbidden
   end
 
   test "get edit sub path mod" do
