@@ -5,8 +5,7 @@ class SearchController < ApplicationController
   def results
     query = params[:q]
     if (query.nil?) || (query == '')
-      redirect_to '/search'
-      return
+      return redirect_to '/search'
     end
     query.downcase!
     @posts = search_posts(query)
@@ -17,12 +16,11 @@ class SearchController < ApplicationController
   def results_users
     query = params[:q]
     if (query.nil?) || (query == '')
-      redirect_to '/search'
-      return
+      return redirect_to '/search'
     end
     query.downcase!
     users = search_users(query)
-    render :json => users
+    return render :json => users
   end
 
   private

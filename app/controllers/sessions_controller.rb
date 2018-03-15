@@ -9,43 +9,33 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: session_params[:email])
-    @errors = []
-    unless user.nil?
-      if user.authenticate(session_params[:password])
-        unless UserPermissions.can_login?(user)
-          flash[:danger] = 'You have been banned from the site.'
-          logger.warn "Banned user ${email}: attempt to login." % {email: user.email}
-          redirect_to root_url
-          return
-        end
+    if user.nil?
+      @errors = ["User's email #{session_params[:email]} not found."]
+      return render "new"
+    end
+    if user.authenticate(session_params[:password])
+      if UserPermissions.can_login?(user)
         log_in user
-        if params[:ref_path]
-          redirect_to params[:ref_path]
-        else
-          redirect_to root_url
-        end
+        return params[:ref_path].nil? ? redirect_to(root_url) : redirect_to(params[:ref_path])
       else
-        @errors.push("Incorrect password! Please try again.")
-        render "new"
+        flash[:danger] = 'You have been banned from the site.'
+        logger.debug "Banned user #{user.email}: attempt to login."
+        return head(:forbidden)
       end
     else
-      @errors.push("User's email %{email} not found." % {email: session_params[:email]})
-      render "new"
+      @errors = ["Incorrect password! Please try again."]
+      @ref_path = params[:ref_path]
+      return render "new"
     end
   end
 
   def destroy
     log_out
-    if params[:ref_path]
-      redirect_to params[:ref_path]
-    else
-      redirect_to root_url
-    end
+    return params[:ref_path].nil? ? redirect_to(root_url) : redirect_to(params[:ref_path])
   end
 
   private
   def session_params
     params.require(:session).permit(:email, :password)
   end
-
 end
