@@ -6,7 +6,7 @@
   <% if @sub.slug != 'all' %>
     <h3 align="center">This sub has <%= pluralize(count_subscribers(@sub), 'subscriber') %></h3>
     <% if logged_in? %>
-      <% if is_moderator? current_user, @sub %>
+      <% if UserPermissions.is_moderator?(current_user, @sub) %>
         <h3 align="center">Admin tools</h3>
         <%= link_to "Edit Sub description", edit_sub_path(slug: @sub.slug), class: ["btn btn-warning btn-block"] %>
       <% end %>

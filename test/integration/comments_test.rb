@@ -41,19 +41,19 @@ class CommentsTest < ActionDispatch::IntegrationTest
 
   test "put update comment not authenticated" do
     put post_comment_path(post_id: posts(:one).id, id: comments(:one).id)
-    assert_redirected_to post_comments_path(posts(:one))
+    assert_response 401
   end
 
   test "put update comment not owner" do
     log_in_as(users(:two))
     put post_comment_path(post_id: posts(:one).id, id: comments(:one).id)
-    assert_redirected_to post_comments_path(posts(:one))
+    assert_response 403
   end
 
   test "put update comment owner" do
     log_in_as(users(:one))
     put post_comment_path(post_id: posts(:one).id, id: comments(:one).id), params: {comment: {content: 'Test changed'}}
-    assert_redirected_to post_comments_path(posts(:one))
+    assert_response :redirect
   end
 
   test "delete comment not authenticated" do
