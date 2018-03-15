@@ -1,41 +1,29 @@
 class RatingsController < ApplicationController
   def vote
-    if current_user.nil?
+    unless current_user.nil?
       flash[:danger] = "Log in mate"
-      return
+      return head(:unauthorized)
     end
     model = params[:model]
     id = params[:id].to_i
     if model.nil? || id.nil?
-      head 500
-      return
+      return head(:internal_server_error)
     end
-    dir = params[:dir].to_i
-    if dir == 0
-      dir = 0
-    else
-      dir = dir > 0 ? 1 : -1
-    end
+    d = params[:dir].to_i
+    dir = d <=> 0
     if model == 'post'
-      object = RatingPost.find_by(user_id: current_user.id, post_id: id)
-      if object.nil?
-        RatingPost.create(user_id: current_user.id, post_id: id, rating: dir)
-      else
-        object.rating = dir
-        object.save
-      end
+      object = RatingPost.find_or_create_by(user_id: current_user.id, post_id: id)
     elsif model == 'comment'
-      object = RatingComment.find_by(user_id: current_user.id, comment_id: id)
-      if object.nil?
-        RatingComment.create(user_id: current_user.id, comment_id: id, rating: dir)
-      else
-        object.rating = dir
-        object.save
-      end
+      object = RatingComment.find_or_create_by(user_id: current_user.id, comment_id: id)
     else
-      head 500
-      return
+      return head(:bad_request)
     end
-    head 200
+    object.rating = dir
+    if object.save
+      return head(:success)
+    else
+      logger.error "ratings/vote Error: " + object.errors.full_messages.join('\n')
+      return head(:internal_server_error)
+    end
   end
 end
