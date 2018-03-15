@@ -7,8 +7,7 @@ class UsersController < ApplicationController
 
   def new
     if logged_in?
-      redirect_to root_url
-      return
+      return redirect_to root_url
     end
     @user = User.new
   end
@@ -21,16 +20,16 @@ class UsersController < ApplicationController
 
   def create
     if logged_in?
-      redirect_to root_url
-      return
+      return redirect_to root_path
     end
-    @user = User.new(user_params)
-    if @user.save
+    user = User.new(user_params)
+    if user.save
+      log_in user
       flash[:success] = "Welcome to Reddit!"
-      log_in @user
-      redirect_to user_path(username: @user.username)
+      return redirect_to user_path(username: user.username)
     else
-      render "new"
+      @user = user
+      return render "new"
     end
   end
 
