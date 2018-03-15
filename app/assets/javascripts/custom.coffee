@@ -1,4 +1,4 @@
-@vote = (model, id, dir, element, sibling) ->
+@vote = (model, id, dir) ->
   $.post
     url: '/ratings/',
     type: 'POST',
@@ -14,26 +14,37 @@
     error: (jqXHR, textStatus, errorThrown) ->
       console.log(textStatus);
     success: (data, textStatus, jqXHR) ->
-      $(element).toggleClass('rating-highlight')
-      $(sibling).removeClass('rating-highlight')
+      return true
 
-@countVote = (element, dir, opposite) ->
-    model = $(element).data("model")
-    id = $(element).data("id")
-    sibling = $(element).siblings(opposite)
-    score = $(element).siblings('.rating-score')
+@countVote = (element, dir) ->
+    $element = $(element)
+    $parent = $element.parent()
+    score = $parent.children('.rating-score')
     s = parseInt(score.text())
-    if sibling.hasClass('rating-highlight')
-      score.text(s+2*dir)
-    else if $(element).hasClass('rating-highlight')
-      score.text(s-1*dir)
-    else  # unvoted
-      score.text(s+1*dir)
-    vote(model, id, dir, element, sibling)
+    ###
+    +---+---+---+---+
+    |   | 0 | 1 |-1 |
+    +---+---+---+---+
+    | 1 | 1 | 0 | 1 |
+    +---+---+---+---+
+    |-1 |-1 |-1 | 0 |
+    +---+---+---+---+
+    ###
+    if dir == s # unvoted
+      $element.removeClass('rating-highlight')
+      dir = 0
+    else if dir == -1
+      $element.addClass('rating-highlight')
+      $parent.children('.rating-upvote').removeClass('rating-highlight')
+    else
+      $element.addClass('rating-highlight')
+      $parent.children('.rating-downvote').removeClass('rating-highlight')
+    score.text(dir)
+    vote($element.data("model"), $element.data("id"), dir)
 
 $ ->
   $(".rating-downvote").click (e) ->
-    countVote(this, -1, '.rating-upvote')
+    countVote(this, -1)
 
   $(".rating-upvote").click (e) ->
-    countVote(this, 1, '.rating-downvote')
+    countVote(this, 1)
