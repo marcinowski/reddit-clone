@@ -39,7 +39,7 @@ class SubsController < ApplicationController
       @sub = Sub.new(slug: 'all')
       @posts = Post.all
     else
-      @sub = Sub.includes(posts: [:rating_posts, :comments], sub_moderators: [:user]).find_by(slug: params[:slug])
+      @sub = Sub.includes(posts: [:rating_posts, :comments, :post_image], sub_moderators: [:user]).find_by(slug: params[:slug])
       @posts = @sub.posts
     end
     # pagination

@@ -5,6 +5,7 @@ class Post < ApplicationRecord
 
   has_many :comments, dependent: :destroy
   has_many :rating_posts, dependent: :destroy
+  has_one :post_image, dependent: :destroy
   belongs_to :user
   belongs_to :sub
   validates :sub,
@@ -17,7 +18,10 @@ class Post < ApplicationRecord
     format: {with: URI.regexp(['http', 'https'])}
   validate :url_or_description?
 
-  after_create :save_model_for_search
+  after_create do
+    :save_model_for_search
+    self.create_post_image(url: self.url)
+  end
 
   after_update :update_model_for_search
 
@@ -26,13 +30,17 @@ class Post < ApplicationRecord
   private
     def save_model_for_search
       save_for_search(self.title, self.class.table_name, self.id)
-      save_for_search(self.description, self.class.table_name, self.id)
+      unless self.description.nil?
+        save_for_search(self.description, self.class.table_name, self.id)
+      end
     end
 
   private
     def update_model_for_search
       update_for_search(self.title, self.class.table_name, self.id)
-      update_for_search(self.description, self.class.table_name, self.id)
+      unless self.description.nil?
+        update_for_search(self.description, self.class.table_name, self.id)
+      end
     end
 
   def url_or_description?

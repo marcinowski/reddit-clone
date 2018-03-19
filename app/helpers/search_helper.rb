@@ -1,8 +1,8 @@
 module SearchHelper
   def save_for_search(text, table, id)
-    text.gsub!(/[^a-zA-Z0-9]/, ' ')
-    text.downcase!
-    args = text.split(' ')
+    content = text.gsub(/[^a-zA-Z0-9]/, ' ')
+    content.downcase!
+    args = content.split(' ')
     args.each do |word|
       SearchTable.create(word: word, table: table, ref_id: id)
     end
