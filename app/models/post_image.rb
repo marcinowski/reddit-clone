@@ -7,15 +7,14 @@ class PostImage < ApplicationRecord
 
   private
     def generateDetails
-      debugger
       r = URI.parse(self.url)
       case r.host
       when /youtube/
         generateForYouTube r.query
       when /imgur/
-        generateForImgur r.host.gsub(/^\/|\/$/, '')
+        generateForImgur r.path.split('/').reject{|i| i.empty?}[-1]
       when /gfycat/
-        generateForGfyCat r.host.gsub(/^\/|\/$/, '')
+        generateForGfyCat r.path.split('/').reject{|i| i.empty?}[-1]
       else
         self.site = nil
       end
@@ -56,7 +55,7 @@ class PostImage < ApplicationRecord
       # https://gfycat.com/PettyCrispLice
       self.site = 'gfycat'
       self.site_id = path
-      self.thumbnail_url = ""
+      self.thumbnail_url = "https://thumbs.gfycat.com/#{path}-thumb100.jpg"
       self.embedded_url = "
         <iframe
           src='https://gfycat.com/ifr/#{path}'

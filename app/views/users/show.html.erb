@@ -4,7 +4,7 @@
     <div class="">
       <h3 align="center" class="center page-header">Posts</h3>
       <% @posts.each do |p| %>
-        <%= render 'shared/post_card', {post: p}%>
+        <%= render 'shared/post_card_simple', {post: p}%>
       <% end %>
     </div>
     <div class="">

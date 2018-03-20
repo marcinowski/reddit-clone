@@ -1,16 +1,6 @@
 <% content_for :sub_main do %>
   <% @posts.each do |post| %>
-  <div style="display: flex; flex-direction: row; align-items: center; padding-left: 10px;">
-    <%=
-      render 'shared/rating',
-      {model: 'post', id: post.id, rating: post.rating_posts.sum(:rating), vote: post.rating_posts.find_by(user: current_user)}
-    %>
-    <% if post.post_image %>
-      <img src="<%= post.post_image.thumbnail_url %>">
-    <% end %>
-    <%= render 'shared/post_card', {post: post}%>
-
-  </div>
+    <%= render 'shared/post_card', {post: post} %>
   <% end %>
   <nav>
     <ul class="pagination">

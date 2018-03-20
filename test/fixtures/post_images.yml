@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  site: MyString
+  site_id: MyString
+  url: MyString
+  thumbnail_url: MyString
+  embedded_url: MyString
+  post: one
+
+two:
+  site: MyString
+  site_id: MyString
+  url: MyString
+  thumbnail_url: MyString
+  embedded_url: MyString
+  post: two

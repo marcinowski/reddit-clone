@@ -1,7 +1,28 @@
-<div class="card" style="padding: 10px">
-  <div class="card-body">
-    <h4 class="card-title"><%= link_to post.title, post.url %></h4>
-    <h5 class="card-subtitle text-muted">Posted by: <%= link_to post.user.username, user_path(username: post.user.username) %> on <%= post.created_at %></h5>
-    <h5 class="card-subtitle text-muted"><%= link_to pluralize(post.comments.count, "comment"), post_comments_path(post_id: post.id) %></h5>
+<div style="display: flex; flex-direction: row; align-items: center; padding-left: 10px;">
+  <%=
+    render 'shared/rating',
+    {model: 'post', id: post.id, rating: post.rating_posts.sum(:rating), vote: post.rating_posts.find_by(user: current_user)}
+  %>
+  <% if post.post_image %>
+    <img style="margin: 5px;" width="50" height="50" src="<%= post.post_image.thumbnail_url %>">
+  <% end %>
+  <div class="card" style="padding: 10px">
+    <div class="card-body">
+      <h4 class="card-title" style="margin-bottom: 0px;"><%= link_to post.title, post.url %></h4>
+      <div style="display: flex; flex-direction: row;">
+        <% if post.post_image %>
+          <i data-id="img-<%= post.id %>" class="embedded-show fa fa-play fa-2x fa-pull-left" style="padding-top: 10px;"></i>
+        <% end %>
+        <div class="disp">
+          <h5 class="card-subtitle text-muted">Posted by: <%= link_to post.user.username, user_path(username: post.user.username) %> on <%= post.created_at %></h5>
+          <h5 class="card-subtitle text-muted"><%= link_to pluralize(post.comments.count, "comment"), post_comments_path(post_id: post.id) %></h5>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+<% if post.post_image %>
+<div id="img-<%= post.id %>" class="row embedded-img" style="display: none; padding-left: 50px;">
+  <%=raw post.post_image.embedded_url %>
+</div>
+<% end %>
