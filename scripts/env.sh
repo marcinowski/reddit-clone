@@ -5,6 +5,7 @@ sudo apk add --update \
   build-base \
   libc-dev \
   libffi-dev \
+  libpq-dev \
   libstdc++ \
   nodejs \
   openssl-dev \
